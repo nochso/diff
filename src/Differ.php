@@ -10,6 +10,7 @@
 
 namespace SebastianBergmann\Diff;
 
+use nochso\Omni\EOL;
 use SebastianBergmann\Diff\LCS\LongestCommonSubsequence;
 use SebastianBergmann\Diff\LCS\TimeEfficientImplementation;
 use SebastianBergmann\Diff\LCS\MemoryEfficientImplementation;
@@ -138,8 +139,8 @@ class Differ
      */
     public function diffToArray($from, $to, LongestCommonSubsequence $lcs = null)
     {
-        preg_match_all('(\r\n|\r|\n)', $from, $fromMatches);
-        preg_match_all('(\r\n|\r|\n)', $to, $toMatches);
+        $diff = array();
+        $this->addLineEndingWarning($from, $to, $diff);
 
         if (is_string($from)) {
             $from = preg_split('(\r\n|\r|\n)', $from);
@@ -180,15 +181,6 @@ class Differ
         }
 
         $common = $lcs->calculate(array_values($from), array_values($to));
-        $diff   = array();
-
-        if (isset($fromMatches[0]) && $toMatches[0] &&
-            count($fromMatches[0]) === count($toMatches[0]) &&
-            $fromMatches[0] !== $toMatches[0]) {
-            $diff[] = array(
-              '#Warning: Strings contain different line endings!', 0
-            );
-        }
 
         foreach ($start as $token) {
             $diff[] = array($token, self::OLD);
@@ -261,5 +253,30 @@ class Differ
         $itemSize = PHP_INT_SIZE == 4 ? 76 : 144;
 
         return $itemSize * pow(min(count($from), count($to)), 2);
+    }
+
+    /**
+     * @param string $from
+     * @param string $to
+     * @param array  $diff
+     */
+    private function addLineEndingWarning($from, $to, &$diff)
+    {
+        try {
+            $fromEol = EOL::detect($from);
+            $toEol   = EOL::detect($to);
+        } catch (\Exception $e) {
+            // Comparison is useless when no line endings are found.
+            return;
+        }
+        if ((string) $fromEol === (string) $toEol) {
+            return;
+        }
+        $warning = sprintf(
+            '#Warning: Line ending changed from %s to %s',
+            $fromEol->getName(),
+            $toEol->getName()
+        );
+        $diff[]  = [$warning, 0];
     }
 }
