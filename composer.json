@@ -1,17 +1,24 @@
 {
-    "name": "sebastian/diff",
+    "name": "nochso/diff",
     "description": "Diff implementation",
-    "keywords": ["diff"],
-    "homepage": "https://github.com/sebastianbergmann/diff",
+    "keywords": ["diff", "lcs"],
+    "homepage": "https://github.com/nochso/diff",
     "license": "BSD-3-Clause",
     "authors": [
         {
             "name": "Sebastian Bergmann",
-            "email": "sebastian@phpunit.de"
+            "email": "sebastian@phpunit.de",
+            "role": "Developer of original library"
         },
         {
             "name": "Kore Nordmann",
-            "email": "mail@kore-nordmann.de"
+            "email": "mail@kore-nordmann.de",
+            "role": "Developer of original library"
+        },
+        {
+            "name": "Marcel Voigt",
+            "email": "mv@noch.so",
+            "role": "Developer"
         }
     ],
     "require": {
