@@ -24,9 +24,14 @@
         "brianium/paratest": "dev-master"
     },
     "autoload": {
-        "classmap": [
-            "src/"
-        ]
+        "psr-4": {
+            "nochso\\Diff\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "nochso\\Diff\\": "tests/"
+        }
     },
     "extra": {
         "branch-alias": {

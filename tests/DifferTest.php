@@ -11,11 +11,10 @@
 namespace nochso\Diff;
 
 use nochso\Omni\EOL;
-use PHPUnit_Framework_TestCase;
 use nochso\Diff\LCS\MemoryEfficientImplementation;
 use nochso\Diff\LCS\TimeEfficientImplementation;
 
-class DifferTest extends PHPUnit_Framework_TestCase
+class DifferTest extends \PHPUnit_Framework_TestCase
 {
     const REMOVED = 2;
     const ADDED   = 1;
