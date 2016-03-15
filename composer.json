@@ -32,5 +32,8 @@
         "branch-alias": {
             "dev-master": "1.4-dev"
         }
+    },
+    "scripts": {
+        "paratest": "php vendor/bin/paratest -p 8 -c phpunit.xml.dist -f tests/"
     }
 }
