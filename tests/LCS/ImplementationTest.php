@@ -10,6 +10,9 @@
 
 namespace nochso\Diff\LCS;
 
+/**
+ * Some of these tests are voluntarily stressful in order to give some approximate benchmark hints.
+ */
 abstract class ImplementationTest extends \PHPUnit_Framework_TestCase
 {
     protected $implementation;
