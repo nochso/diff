@@ -46,6 +46,7 @@
         }
     },
     "scripts": {
-        "paratest": "php vendor/bin/paratest -p 8 -c phpunit.xml.dist -f tests/"
+        "paratest": "php vendor/bin/paratest -p 8 -c phpunit.xml.dist -f tests/",
+        "csfix": "php vendor/bin/php-cs-fixer fix"
     }
 }
