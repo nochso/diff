@@ -244,6 +244,11 @@ class DifferTest extends \PHPUnit_Framework_TestCase
                 'abcdde',
                 'abcde'
             ),
+            array(
+                "--- Original\n+++ New\n@@ @@\n-a\t\n+b\t\n",
+                "a\t",
+                "b\t",
+            )
         );
     }
 }
