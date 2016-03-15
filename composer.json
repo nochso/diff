@@ -20,7 +20,8 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^5.2",
-        "fabpot/php-cs-fixer": "^1.11"
+        "fabpot/php-cs-fixer": "^1.11",
+        "brianium/paratest": "dev-master"
     },
     "autoload": {
         "classmap": [
