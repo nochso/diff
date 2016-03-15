@@ -148,64 +148,64 @@ class DifferTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 array(
-                    array('a', Differ::REMOVED),
-                    array('b', Differ::ADDED)
+                    array('a', Differ::REMOVE),
+                    array('b', Differ::ADD)
                 ),
                 'a',
                 'b'
             ),
             array(
                 array(
-                    array('ba', Differ::REMOVED),
-                    array('bc', Differ::ADDED)
+                    array('ba', Differ::REMOVE),
+                    array('bc', Differ::ADD)
                 ),
                 'ba',
                 'bc'
             ),
             array(
                 array(
-                    array('ab', Differ::REMOVED),
-                    array('cb', Differ::ADDED)
+                    array('ab', Differ::REMOVE),
+                    array('cb', Differ::ADD)
                 ),
                 'ab',
                 'cb'
             ),
             array(
                 array(
-                    array('abc', Differ::REMOVED),
-                    array('adc', Differ::ADDED)
+                    array('abc', Differ::REMOVE),
+                    array('adc', Differ::ADD)
                 ),
                 'abc',
                 'adc'
             ),
             array(
                 array(
-                    array('ab', Differ::REMOVED),
-                    array('abc', Differ::ADDED)
+                    array('ab', Differ::REMOVE),
+                    array('abc', Differ::ADD)
                 ),
                 'ab',
                 'abc'
             ),
             array(
                 array(
-                    array('bc', Differ::REMOVED),
-                    array('abc', Differ::ADDED)
+                    array('bc', Differ::REMOVE),
+                    array('abc', Differ::ADD)
                 ),
                 'bc',
                 'abc'
             ),
             array(
                 array(
-                    array('abc', Differ::REMOVED),
-                    array('abbc', Differ::ADDED)
+                    array('abc', Differ::REMOVE),
+                    array('abbc', Differ::ADD)
                 ),
                 'abc',
                 'abbc'
             ),
             array(
                 array(
-                    array('abcdde', Differ::REMOVED),
-                    array('abcde', Differ::ADDED)
+                    array('abcdde', Differ::REMOVE),
+                    array('abcde', Differ::ADD)
                 ),
                 'abcdde',
                 'abcde'

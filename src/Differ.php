@@ -22,9 +22,9 @@ use nochso\Diff\LCS\MemoryEfficientImplementation;
  */
 class Differ
 {
-    const REMOVED = 2;
-    const ADDED   = 1;
-    const OLD     = 0;
+    const REMOVE   = 2;
+    const ADD      = 1;
+    const SAME     = 0;
 
     /**
      * @var string[]
