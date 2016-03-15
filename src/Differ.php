@@ -20,10 +20,6 @@ use SebastianBergmann\Diff\LCS\MemoryEfficientImplementation;
  */
 class Differ
 {
-    const REMOVED = 2;
-    const ADDED   = 1;
-    const OLD     = 0;
-
     /**
      * @var string
      */
@@ -70,7 +66,7 @@ class Differ
         $old   = array();
 
         foreach ($diff as $line) {
-            if ($line[1] ===  self::OLD) {
+            if ($line[1] ===  0 /* OLD */) {
                 if ($inOld === false) {
                     $inOld = $i;
                 }
@@ -108,9 +104,9 @@ class Differ
                 $newChunk = false;
             }
 
-            if ($diff[$i][1] === self::ADDED) {
+            if ($diff[$i][1] === 1 /* ADDED */) {
                 $buffer .= '+' . $diff[$i][0] . "\n";
-            } elseif ($diff[$i][1] === self::REMOVED) {
+            } elseif ($diff[$i][1] === 2 /* REMOVED */) {
                 $buffer .= '-' . $diff[$i][0] . "\n";
             } elseif ($this->showNonDiffLines === true) {
                 $buffer .= ' ' . $diff[$i][0] . "\n";
@@ -183,7 +179,7 @@ class Differ
         $common = $lcs->calculate(array_values($from), array_values($to));
 
         foreach ($start as $token) {
-            $diff[] = array($token, self::OLD);
+            $diff[] = array($token, 0 /* OLD */);
         }
 
         reset($from);
@@ -191,29 +187,29 @@ class Differ
 
         foreach ($common as $token) {
             while ((($fromToken = reset($from)) !== $token)) {
-                $diff[] = array(array_shift($from), self::REMOVED);
+                $diff[] = array(array_shift($from), 2 /* REMOVED */);
             }
 
             while ((($toToken = reset($to)) !== $token)) {
-                $diff[] = array(array_shift($to), self::ADDED);
+                $diff[] = array(array_shift($to), 1 /* ADDED */);
             }
 
-            $diff[] = array($token, self::OLD);
+            $diff[] = array($token, 0 /* OLD */);
 
             array_shift($from);
             array_shift($to);
         }
 
         while (($token = array_shift($from)) !== null) {
-            $diff[] = array($token, self::REMOVED);
+            $diff[] = array($token, 2 /* REMOVED */);
         }
 
         while (($token = array_shift($to)) !== null) {
-            $diff[] = array($token, self::ADDED);
+            $diff[] = array($token, 1 /* ADDED */);
         }
 
         foreach ($end as $token) {
-            $diff[] = array($token, self::OLD);
+            $diff[] = array($token, 0 /* OLD */);
         }
 
         return $diff;
