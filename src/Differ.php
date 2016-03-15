@@ -8,12 +8,12 @@
  * file that was distributed with this source code.
  */
 
-namespace SebastianBergmann\Diff;
+namespace nochso\Diff;
 
 use nochso\Omni\EOL;
-use SebastianBergmann\Diff\LCS\LongestCommonSubsequence;
-use SebastianBergmann\Diff\LCS\TimeEfficientImplementation;
-use SebastianBergmann\Diff\LCS\MemoryEfficientImplementation;
+use nochso\Diff\LCS\LongestCommonSubsequence;
+use nochso\Diff\LCS\TimeEfficientImplementation;
+use nochso\Diff\LCS\MemoryEfficientImplementation;
 
 /**
  * Diff implementation.

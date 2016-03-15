@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace SebastianBergmann\Diff\LCS;
+namespace nochso\Diff\LCS;
 
 use PHPUnit_Framework_TestCase;
 

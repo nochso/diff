@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace SebastianBergmann\Diff\LCS;
+namespace nochso\Diff\LCS;
 
 /**
  * Interface for implementations of longest common subsequence calculation.
