@@ -12,6 +12,7 @@ namespace nochso\Diff;
 
 use nochso\Omni\EOL;
 use nochso\Omni\Multiline;
+use nochso\Omni\Strings;
 use nochso\Diff\LCS\LongestCommonSubsequence;
 use nochso\Diff\LCS\TimeEfficientImplementation;
 use nochso\Diff\LCS\MemoryEfficientImplementation;
@@ -49,10 +50,12 @@ class Differ
      * @param array|string             $from
      * @param array|string             $to
      * @param LongestCommonSubsequence $lcs
+     * @param bool                     $escapeControlChars Optional, defaults to false. When set to true, will escape
+     *                                                     control characters, e.g. a trailing TAB will be shown as \t
      *
      * @return string
      */
-    public function diff($from, $to, LongestCommonSubsequence $lcs = null)
+    public function diff($from, $to, LongestCommonSubsequence $lcs = null, $escapeControlChars = false)
     {
         if (!is_array($from) && !is_string($from)) {
             $from = (string) $from;
@@ -118,6 +121,11 @@ class Differ
             }
         }
 
+        if ($escapeControlChars) {
+            $lines->apply(function ($line) {
+                return Strings::escapeControlChars($line);
+            });
+        }
         $lines->add('');
 
         return (string) $lines;
