@@ -17,10 +17,6 @@ use nochso\Diff\LCS\TimeEfficientImplementation;
 
 class DifferTest extends \PHPUnit_Framework_TestCase
 {
-    const REMOVED = 2;
-    const ADDED   = 1;
-    const OLD     = 0;
-
     /**
      * @var Differ
      */
@@ -152,64 +148,64 @@ class DifferTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 array(
-                    array('a', self::REMOVED),
-                    array('b', self::ADDED)
+                    array('a', Differ::REMOVED),
+                    array('b', Differ::ADDED)
                 ),
                 'a',
                 'b'
             ),
             array(
                 array(
-                    array('ba', self::REMOVED),
-                    array('bc', self::ADDED)
+                    array('ba', Differ::REMOVED),
+                    array('bc', Differ::ADDED)
                 ),
                 'ba',
                 'bc'
             ),
             array(
                 array(
-                    array('ab', self::REMOVED),
-                    array('cb', self::ADDED)
+                    array('ab', Differ::REMOVED),
+                    array('cb', Differ::ADDED)
                 ),
                 'ab',
                 'cb'
             ),
             array(
                 array(
-                    array('abc', self::REMOVED),
-                    array('adc', self::ADDED)
+                    array('abc', Differ::REMOVED),
+                    array('adc', Differ::ADDED)
                 ),
                 'abc',
                 'adc'
             ),
             array(
                 array(
-                    array('ab', self::REMOVED),
-                    array('abc', self::ADDED)
+                    array('ab', Differ::REMOVED),
+                    array('abc', Differ::ADDED)
                 ),
                 'ab',
                 'abc'
             ),
             array(
                 array(
-                    array('bc', self::REMOVED),
-                    array('abc', self::ADDED)
+                    array('bc', Differ::REMOVED),
+                    array('abc', Differ::ADDED)
                 ),
                 'bc',
                 'abc'
             ),
             array(
                 array(
-                    array('abc', self::REMOVED),
-                    array('abbc', self::ADDED)
+                    array('abc', Differ::REMOVED),
+                    array('abbc', Differ::ADDED)
                 ),
                 'abc',
                 'abbc'
             ),
             array(
                 array(
-                    array('abcdde', self::REMOVED),
-                    array('abcde', self::ADDED)
+                    array('abcdde', Differ::REMOVED),
+                    array('abcde', Differ::ADDED)
                 ),
                 'abcdde',
                 'abcde'
