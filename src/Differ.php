@@ -42,15 +42,6 @@ class Differ
         if ($formatter === null) {
             $formatter = new Format\Upstream();
         }
-
-        if (!is_array($from) && !is_string($from)) {
-            $from = (string) $from;
-        }
-
-        if (!is_array($to) && !is_string($to)) {
-            $to = (string) $to;
-        }
-
         $diff = $this->diffToArray($from, $to, $lcs);
 
         return $formatter->format($diff, $this->messages);
@@ -78,6 +69,14 @@ class Differ
         $this->messages = [];
         $diff           = array();
         $this->addLineEndingWarning($from, $to);
+
+        if (!is_array($from) && !is_string($from)) {
+            $from = (string) $from;
+        }
+
+        if (!is_array($to) && !is_string($to)) {
+            $to = (string) $to;
+        }
 
         if (is_string($from)) {
             $from = Multiline::create($from)->toArray();
