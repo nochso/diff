@@ -10,9 +10,9 @@
 
 namespace nochso\Diff;
 
+use nochso\Diff\Format\Formatter;
 use nochso\Omni\EOL;
 use nochso\Omni\Multiline;
-use nochso\Omni\Strings;
 use nochso\Diff\LCS\LongestCommonSubsequence;
 use nochso\Diff\LCS\TimeEfficientImplementation;
 use nochso\Diff\LCS\MemoryEfficientImplementation;
@@ -22,41 +22,27 @@ use nochso\Diff\LCS\MemoryEfficientImplementation;
  */
 class Differ
 {
-    const HEADER_DEFAULT = ['--- Original','+++ New'];
-
     /**
-     * @var string
+     * @var string[]
      */
-    private $header;
-
-    /**
-     * @var bool
-     */
-    private $showNonDiffLines;
-
-    /**
-     * @param string[] $header
-     * @param bool     $showNonDiffLines
-     */
-    public function __construct(array $header = self::HEADER_DEFAULT, $showNonDiffLines = true)
-    {
-        $this->header           = $header;
-        $this->showNonDiffLines = $showNonDiffLines;
-    }
+    private $messages = [];
 
     /**
      * Returns the diff between two arrays or strings as string.
      *
-     * @param array|string             $from
-     * @param array|string             $to
-     * @param LongestCommonSubsequence $lcs
-     * @param bool                     $escapeControlChars Optional, defaults to false. When set to true, will escape
-     *                                                     control characters, e.g. a trailing TAB will be shown as \t
+     * @param array|string                  $from
+     * @param array|string                  $to
+     * @param LongestCommonSubsequence      $lcs
+     * @param \nochso\Diff\Format\Formatter $formatter
      *
-     * @return string
+     * @return mixed
      */
-    public function diff($from, $to, LongestCommonSubsequence $lcs = null, $escapeControlChars = false)
+    public function diff($from, $to, LongestCommonSubsequence $lcs = null, Formatter $formatter = null)
     {
+        if ($formatter === null) {
+            $formatter = new Format\Upstream();
+        }
+
         if (!is_array($from) && !is_string($from)) {
             $from = (string) $from;
         }
@@ -65,70 +51,9 @@ class Differ
             $to = (string) $to;
         }
 
-        $lines  = new Multiline($this->header);
-        $lines->setEol("\n");
-        $diff   = $this->diffToArray($from, $to, $lcs);
+        $diff = $this->diffToArray($from, $to, $lcs);
 
-        $inOld = false;
-        $i     = 0;
-        $old   = array();
-
-        foreach ($diff as $line) {
-            if ($line[1] ===  0 /* OLD */) {
-                if ($inOld === false) {
-                    $inOld = $i;
-                }
-            } elseif ($inOld !== false) {
-                if (($i - $inOld) > 5) {
-                    $old[$inOld] = $i - 1;
-                }
-
-                $inOld = false;
-            }
-
-            ++$i;
-        }
-
-        $start = isset($old[0]) ? $old[0] : 0;
-        $end   = count($diff);
-
-        if ($tmp = array_search($end, $old)) {
-            $end = $tmp;
-        }
-
-        $newChunk = true;
-
-        for ($i = $start; $i < $end; $i++) {
-            if (isset($old[$i])) {
-                $lines->add('');
-                $newChunk = true;
-                $i        = $old[$i];
-            }
-
-            if ($newChunk) {
-                if ($this->showNonDiffLines === true) {
-                    $lines->add('@@ @@');
-                }
-                $newChunk = false;
-            }
-
-            if ($diff[$i][1] === 1 /* ADDED */) {
-                $lines->add('+' . $diff[$i][0]);
-            } elseif ($diff[$i][1] === 2 /* REMOVED */) {
-                $lines->add('-' . $diff[$i][0]);
-            } elseif ($this->showNonDiffLines === true) {
-                $lines->add(' ' . $diff[$i][0]);
-            }
-        }
-
-        if ($escapeControlChars) {
-            $lines->apply(function ($line) {
-                return Strings::escapeControlChars($line);
-            });
-        }
-        $lines->add('');
-
-        return (string) $lines;
+        return $formatter->format($diff, $this->messages);
     }
 
     /**
@@ -150,8 +75,9 @@ class Differ
      */
     public function diffToArray($from, $to, LongestCommonSubsequence $lcs = null)
     {
-        $diff = array();
-        $this->addLineEndingWarning($from, $to, $diff);
+        $this->messages = [];
+        $diff           = array();
+        $this->addLineEndingWarning($from, $to);
 
         if (is_string($from)) {
             $from = Multiline::create($from)->toArray();
@@ -269,9 +195,8 @@ class Differ
     /**
      * @param string $from
      * @param string $to
-     * @param array  $diff
      */
-    private function addLineEndingWarning($from, $to, &$diff)
+    private function addLineEndingWarning($from, $to)
     {
         try {
             $fromEol = EOL::detect($from);
@@ -288,6 +213,6 @@ class Differ
             $fromEol->getName(),
             $toEol->getName()
         );
-        $diff[]  = [$warning, 0];
+        $this->messages[] = $warning;
     }
 }
