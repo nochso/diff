@@ -10,6 +10,7 @@
 
 namespace nochso\Diff;
 
+use nochso\Diff\Format\Upstream;
 use nochso\Omni\EOL;
 use nochso\Diff\LCS\MemoryEfficientImplementation;
 use nochso\Diff\LCS\TimeEfficientImplementation;
@@ -64,7 +65,9 @@ class DifferTest extends \PHPUnit_Framework_TestCase
      */
     public function testTextRepresentationOfDiffProperlyEscapesControlChars($expected, $from, $to)
     {
-        $this->assertEquals($expected, $this->differ->diff($from, $to, null, true));
+        $formatter = new Upstream();
+        $formatter->escapeControlChars();
+        $this->assertEquals($expected, $this->differ->diff($from, $to, null, $formatter));
     }
 
     /**
@@ -98,11 +101,13 @@ class DifferTest extends \PHPUnit_Framework_TestCase
      */
     public function testCustomHeaderCanBeUsed()
     {
-        $differ = new Differ(['CUSTOM HEADER']);
+        $differ    = new Differ();
+        $formatter = new Upstream();
+        $formatter->setHeader(['CUSTOM HEADER']);
 
         $this->assertEquals(
             "CUSTOM HEADER\n@@ @@\n-a\n+b\n",
-            $differ->diff('a', 'b')
+            $differ->diff('a', 'b', null, $formatter)
         );
     }
 
@@ -122,14 +127,14 @@ class DifferTest extends \PHPUnit_Framework_TestCase
         $diff = $this->differ->diff($from, $to);
         // No warning
         if ($expectedFromEol === null) {
-            $this->assertNotRegExp('/^ #Warning: Line ending changed from .+ to .+$/m', $diff);
+            $this->assertNotRegExp('/#Warning: Line ending changed from .+ to .+$/m', $diff);
 
             return;
         }
 
         $fromEolName = (new EOL($expectedFromEol))->getName();
         $toEolName   = (new EOL($expectedToEol))->getName();
-        $pattern     = sprintf('/^ #Warning: Line ending changed from %s to %s$/m', preg_quote($fromEolName), preg_quote($toEolName));
+        $pattern     = sprintf('/^#Warning: Line ending changed from %s to %s$/m', preg_quote($fromEolName), preg_quote($toEolName));
         $this->assertRegExp($pattern, $diff);
     }
 
