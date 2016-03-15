@@ -80,7 +80,7 @@ class MemoryEfficientImplementation implements LongestCommonSubsequence
             $prev = $current;
 
             for ($j = 0; $j < $cTo; $j++) {
-                if ($from[$i] == $to[$j]) {
+                if ($from[$i] === $to[$j]) {
                     $current[$j + 1] = $prev[$j] + 1;
                 } else {
                     $current[$j + 1] = max($current[$j], $prev[$j + 1]);
