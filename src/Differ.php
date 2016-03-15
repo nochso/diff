@@ -11,6 +11,7 @@
 namespace nochso\Diff;
 
 use nochso\Omni\EOL;
+use nochso\Omni\Multiline;
 use nochso\Diff\LCS\LongestCommonSubsequence;
 use nochso\Diff\LCS\TimeEfficientImplementation;
 use nochso\Diff\LCS\MemoryEfficientImplementation;
@@ -20,6 +21,8 @@ use nochso\Diff\LCS\MemoryEfficientImplementation;
  */
 class Differ
 {
+    const HEADER_DEFAULT = ['--- Original','+++ New'];
+
     /**
      * @var string
      */
@@ -31,9 +34,10 @@ class Differ
     private $showNonDiffLines;
 
     /**
-     * @param string $header
+     * @param string[] $header
+     * @param bool     $showNonDiffLines
      */
-    public function __construct($header = "--- Original\n+++ New\n", $showNonDiffLines = true)
+    public function __construct(array $header = self::HEADER_DEFAULT, $showNonDiffLines = true)
     {
         $this->header           = $header;
         $this->showNonDiffLines = $showNonDiffLines;
@@ -58,7 +62,8 @@ class Differ
             $to = (string) $to;
         }
 
-        $buffer = $this->header;
+        $lines  = new Multiline($this->header);
+        $lines->setEol("\n");
         $diff   = $this->diffToArray($from, $to, $lcs);
 
         $inOld = false;
@@ -92,28 +97,30 @@ class Differ
 
         for ($i = $start; $i < $end; $i++) {
             if (isset($old[$i])) {
-                $buffer  .= "\n";
+                $lines->add('');
                 $newChunk = true;
                 $i        = $old[$i];
             }
 
             if ($newChunk) {
                 if ($this->showNonDiffLines === true) {
-                    $buffer .= "@@ @@\n";
+                    $lines->add('@@ @@');
                 }
                 $newChunk = false;
             }
 
             if ($diff[$i][1] === 1 /* ADDED */) {
-                $buffer .= '+' . $diff[$i][0] . "\n";
+                $lines->add('+' . $diff[$i][0]);
             } elseif ($diff[$i][1] === 2 /* REMOVED */) {
-                $buffer .= '-' . $diff[$i][0] . "\n";
+                $lines->add('-' . $diff[$i][0]);
             } elseif ($this->showNonDiffLines === true) {
-                $buffer .= ' ' . $diff[$i][0] . "\n";
+                $lines->add(' ' . $diff[$i][0]);
             }
         }
 
-        return $buffer;
+        $lines->add('');
+
+        return (string) $lines;
     }
 
     /**
@@ -139,11 +146,11 @@ class Differ
         $this->addLineEndingWarning($from, $to, $diff);
 
         if (is_string($from)) {
-            $from = preg_split('(\r\n|\r|\n)', $from);
+            $from = Multiline::create($from)->toArray();
         }
 
         if (is_string($to)) {
-            $to = preg_split('(\r\n|\r|\n)', $to);
+            $to = Multiline::create($to)->toArray();
         }
 
         $start      = array();

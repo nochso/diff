@@ -10,6 +10,8 @@
 
 namespace nochso\Diff;
 
+use nochso\Omni\Multiline;
+
 /**
  * Unified diff parser.
  */
@@ -22,7 +24,7 @@ class Parser
      */
     public function parse($string)
     {
-        $lines     = preg_split('(\r\n|\r|\n)', $string);
+        $lines     = Multiline::create($string)->toArray();
         $lineCount = count($lines);
         $diffs     = array();
         $diff      = null;
