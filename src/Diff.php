@@ -7,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace nochso\Diff;
 
 /**
@@ -34,10 +33,10 @@ class Diff
      * @param string  $to
      * @param Chunk[] $chunks
      */
-    public function __construct($from, $to, array $chunks = array())
+    public function __construct($from, $to, array $chunks = [])
     {
-        $this->from   = $from;
-        $this->to     = $to;
+        $this->from = $from;
+        $this->to = $to;
         $this->chunks = $chunks;
     }
 

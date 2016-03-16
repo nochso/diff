@@ -1,5 +1,4 @@
 <?php
-
 namespace nochso\Diff\Format;
 
 interface Formatter

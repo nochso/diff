@@ -7,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace nochso\Diff\LCS;
 
 /**
@@ -17,7 +16,7 @@ abstract class ImplementationTest extends \PHPUnit_Framework_TestCase
 {
     protected $implementation;
     protected $memory_limit;
-    protected $stress_sizes = array(1, 2, 3, 100, 500, 1000, 2000);
+    protected $stress_sizes = [1, 2, 3, 100, 500, 1000, 2000];
 
     protected function setUp()
     {
@@ -32,32 +31,32 @@ abstract class ImplementationTest extends \PHPUnit_Framework_TestCase
 
     public function testBothEmpty()
     {
-        $from   = array();
-        $to     = array();
+        $from = [];
+        $to = [];
         $common = $this->implementation->calculate($from, $to);
 
-        $this->assertEquals(array(), $common);
+        $this->assertEquals([], $common);
     }
 
     public function testIsStrictComparison()
     {
-        $from = array(
-            false, 0, 0.0, '', null, array(),
-            true, 1, 1.0, 'foo', array('foo', 'bar'), array('foo' => 'bar')
-        );
-        $to     = $from;
+        $from = [
+            false, 0, 0.0, '', null, [],
+            true, 1, 1.0, 'foo', ['foo', 'bar'], ['foo' => 'bar'],
+        ];
+        $to = $from;
         $common = $this->implementation->calculate($from, $to);
 
         $this->assertEquals($from, $common);
 
-        $to = array(
+        $to = [
             false, false, false, false, false, false,
-            true, true, true, true, true, true
-        );
-        $expected = array(
+            true, true, true, true, true, true,
+        ];
+        $expected = [
             false,
             true,
-        );
+        ];
         $common = $this->implementation->calculate($from, $to);
 
         $this->assertEquals($expected, $common);
@@ -66,9 +65,9 @@ abstract class ImplementationTest extends \PHPUnit_Framework_TestCase
     public function testEqualSequences()
     {
         foreach ($this->stress_sizes as $size) {
-            $range  = range(1, $size);
-            $from   = $range;
-            $to     = $range;
+            $range = range(1, $size);
+            $from = $range;
+            $to = $range;
             $common = $this->implementation->calculate($from, $to);
 
             $this->assertEquals($range, $common);
@@ -77,43 +76,43 @@ abstract class ImplementationTest extends \PHPUnit_Framework_TestCase
 
     public function testDistinctSequences()
     {
-        $from   = array('A');
-        $to     = array('B');
+        $from = ['A'];
+        $to = ['B'];
         $common = $this->implementation->calculate($from, $to);
-        $this->assertEquals(array(), $common);
+        $this->assertEquals([], $common);
 
-        $from   = array('A', 'B', 'C');
-        $to     = array('D', 'E', 'F');
+        $from = ['A', 'B', 'C'];
+        $to = ['D', 'E', 'F'];
         $common = $this->implementation->calculate($from, $to);
-        $this->assertEquals(array(), $common);
+        $this->assertEquals([], $common);
 
         foreach ($this->stress_sizes as $size) {
-            $from   = range(1, $size);
-            $to     = range($size + 1, $size * 2);
+            $from = range(1, $size);
+            $to = range($size + 1, $size * 2);
             $common = $this->implementation->calculate($from, $to);
-            $this->assertEquals(array(), $common);
+            $this->assertEquals([], $common);
         }
     }
 
     public function testCommonSubsequence()
     {
-        $from     = array('A',      'C',      'E', 'F', 'G');
-        $to       = array('A', 'B',      'D', 'E',           'H');
-        $expected = array('A',                'E');
-        $common   = $this->implementation->calculate($from, $to);
+        $from = ['A',      'C',      'E', 'F', 'G'];
+        $to = ['A', 'B',      'D', 'E',           'H'];
+        $expected = ['A',                'E'];
+        $common = $this->implementation->calculate($from, $to);
         $this->assertEquals($expected, $common);
 
-        $from     = array('A',      'C',      'E', 'F', 'G');
-        $to       = array('B', 'C', 'D', 'E', 'F',      'H');
-        $expected = array('C',                'E', 'F');
-        $common   = $this->implementation->calculate($from, $to);
+        $from = ['A',      'C',      'E', 'F', 'G'];
+        $to = ['B', 'C', 'D', 'E', 'F',      'H'];
+        $expected = ['C',                'E', 'F'];
+        $common = $this->implementation->calculate($from, $to);
         $this->assertEquals($expected, $common);
 
         foreach ($this->stress_sizes as $size) {
-            $from     = $size < 2 ? array(1) : range(1, $size + 1, 2);
-            $to       = $size < 3 ? array(1) : range(1, $size + 1, 3);
-            $expected = $size < 6 ? array(1) : range(1, $size + 1, 6);
-            $common   = $this->implementation->calculate($from, $to);
+            $from = $size < 2 ? [1] : range(1, $size + 1, 2);
+            $to = $size < 3 ? [1] : range(1, $size + 1, 3);
+            $expected = $size < 6 ? [1] : range(1, $size + 1, 6);
+            $common = $this->implementation->calculate($from, $to);
 
             $this->assertEquals($expected, $common);
         }
@@ -122,8 +121,8 @@ abstract class ImplementationTest extends \PHPUnit_Framework_TestCase
     public function testSingleElementSubsequenceAtStart()
     {
         foreach ($this->stress_sizes as $size) {
-            $from   = range(1, $size);
-            $to     = array_slice($from, 0, 1);
+            $from = range(1, $size);
+            $to = array_slice($from, 0, 1);
             $common = $this->implementation->calculate($from, $to);
 
             $this->assertEquals($to, $common);
@@ -133,8 +132,8 @@ abstract class ImplementationTest extends \PHPUnit_Framework_TestCase
     public function testSingleElementSubsequenceAtMiddle()
     {
         foreach ($this->stress_sizes as $size) {
-            $from   = range(1, $size);
-            $to     = array_slice($from, (int) $size / 2, 1);
+            $from = range(1, $size);
+            $to = array_slice($from, (int) $size / 2, 1);
             $common = $this->implementation->calculate($from, $to);
 
             $this->assertEquals($to, $common);
@@ -144,8 +143,8 @@ abstract class ImplementationTest extends \PHPUnit_Framework_TestCase
     public function testSingleElementSubsequenceAtEnd()
     {
         foreach ($this->stress_sizes as $size) {
-            $from   = range(1, $size);
-            $to     = array_slice($from, $size - 1, 1);
+            $from = range(1, $size);
+            $to = array_slice($from, $size - 1, 1);
             $common = $this->implementation->calculate($from, $to);
 
             $this->assertEquals($to, $common);
@@ -154,18 +153,18 @@ abstract class ImplementationTest extends \PHPUnit_Framework_TestCase
 
     public function testReversedSequences()
     {
-        $from     = array('A', 'B');
-        $to       = array('B', 'A');
-        $expected = array('A');
-        $common   = $this->implementation->calculate($from, $to);
+        $from = ['A', 'B'];
+        $to = ['B', 'A'];
+        $expected = ['A'];
+        $common = $this->implementation->calculate($from, $to);
         $this->assertEquals($expected, $common);
 
         foreach ($this->stress_sizes as $size) {
-            $from   = range(1, $size);
-            $to     = array_reverse($from);
+            $from = range(1, $size);
+            $to = array_reverse($from);
             $common = $this->implementation->calculate($from, $to);
 
-            $this->assertEquals(array(1), $common);
+            $this->assertEquals([1], $common);
         }
     }
 }

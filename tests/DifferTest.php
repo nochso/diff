@@ -7,13 +7,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace nochso\Diff;
 
 use nochso\Diff\Format\Upstream;
-use nochso\Omni\EOL;
 use nochso\Diff\LCS\MemoryEfficientImplementation;
 use nochso\Diff\LCS\TimeEfficientImplementation;
+use nochso\Omni\EOL;
 
 class DifferTest extends \PHPUnit_Framework_TestCase
 {
@@ -24,7 +23,7 @@ class DifferTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->differ = new Differ;
+        $this->differ = new Differ();
     }
 
     /**
@@ -37,7 +36,7 @@ class DifferTest extends \PHPUnit_Framework_TestCase
      */
     public function testArrayRepresentationOfDiffCanBeRenderedUsingTimeEfficientLcsImplementation(array $expected, $from, $to)
     {
-        $this->assertEquals($expected, $this->differ->diffToArray($from, $to, new TimeEfficientImplementation));
+        $this->assertEquals($expected, $this->differ->diffToArray($from, $to, new TimeEfficientImplementation()));
     }
 
     /**
@@ -50,7 +49,7 @@ class DifferTest extends \PHPUnit_Framework_TestCase
      */
     public function testTextRepresentationOfDiffCanBeRenderedUsingTimeEfficientLcsImplementation($expected, $from, $to)
     {
-        $this->assertEquals($expected, $this->differ->diff($from, $to, new TimeEfficientImplementation));
+        $this->assertEquals($expected, $this->differ->diff($from, $to, new TimeEfficientImplementation()));
     }
 
     /**
@@ -76,7 +75,7 @@ class DifferTest extends \PHPUnit_Framework_TestCase
      */
     public function testArrayRepresentationOfDiffCanBeRenderedUsingMemoryEfficientLcsImplementation(array $expected, $from, $to)
     {
-        $this->assertEquals($expected, $this->differ->diffToArray($from, $to, new MemoryEfficientImplementation));
+        $this->assertEquals($expected, $this->differ->diffToArray($from, $to, new MemoryEfficientImplementation()));
     }
 
     /**
@@ -89,7 +88,7 @@ class DifferTest extends \PHPUnit_Framework_TestCase
      */
     public function testTextRepresentationOfDiffCanBeRenderedUsingMemoryEfficientLcsImplementation($expected, $from, $to)
     {
-        $this->assertEquals($expected, $this->differ->diff($from, $to, new MemoryEfficientImplementation));
+        $this->assertEquals($expected, $this->differ->diff($from, $to, new MemoryEfficientImplementation()));
     }
 
     /**
@@ -97,7 +96,7 @@ class DifferTest extends \PHPUnit_Framework_TestCase
      */
     public function testCustomHeaderCanBeUsed()
     {
-        $differ    = new Differ();
+        $differ = new Differ();
         $formatter = new Upstream();
         $formatter->setHeader(['CUSTOM HEADER']);
 
@@ -129,8 +128,8 @@ class DifferTest extends \PHPUnit_Framework_TestCase
         }
 
         $fromEolName = (new EOL($expectedFromEol))->getName();
-        $toEolName   = (new EOL($expectedToEol))->getName();
-        $pattern     = sprintf('/^#Warning: Line ending changed from %s to %s$/m', preg_quote($fromEolName), preg_quote($toEolName));
+        $toEolName = (new EOL($expectedToEol))->getName();
+        $pattern = sprintf('/^#Warning: Line ending changed from %s to %s$/m', preg_quote($fromEolName), preg_quote($toEolName));
         $this->assertRegExp($pattern, $diff);
     }
 
@@ -145,123 +144,123 @@ class DifferTest extends \PHPUnit_Framework_TestCase
 
     public function arrayProvider()
     {
-        return array(
-            array(
-                array(
-                    array('a', Differ::REMOVE),
-                    array('b', Differ::ADD)
-                ),
+        return [
+            [
+                [
+                    ['a', Differ::REMOVE],
+                    ['b', Differ::ADD],
+                ],
                 'a',
-                'b'
-            ),
-            array(
-                array(
-                    array('ba', Differ::REMOVE),
-                    array('bc', Differ::ADD)
-                ),
+                'b',
+            ],
+            [
+                [
+                    ['ba', Differ::REMOVE],
+                    ['bc', Differ::ADD],
+                ],
                 'ba',
-                'bc'
-            ),
-            array(
-                array(
-                    array('ab', Differ::REMOVE),
-                    array('cb', Differ::ADD)
-                ),
-                'ab',
-                'cb'
-            ),
-            array(
-                array(
-                    array('abc', Differ::REMOVE),
-                    array('adc', Differ::ADD)
-                ),
-                'abc',
-                'adc'
-            ),
-            array(
-                array(
-                    array('ab', Differ::REMOVE),
-                    array('abc', Differ::ADD)
-                ),
-                'ab',
-                'abc'
-            ),
-            array(
-                array(
-                    array('bc', Differ::REMOVE),
-                    array('abc', Differ::ADD)
-                ),
                 'bc',
-                'abc'
-            ),
-            array(
-                array(
-                    array('abc', Differ::REMOVE),
-                    array('abbc', Differ::ADD)
-                ),
+            ],
+            [
+                [
+                    ['ab', Differ::REMOVE],
+                    ['cb', Differ::ADD],
+                ],
+                'ab',
+                'cb',
+            ],
+            [
+                [
+                    ['abc', Differ::REMOVE],
+                    ['adc', Differ::ADD],
+                ],
                 'abc',
-                'abbc'
-            ),
-            array(
-                array(
-                    array('abcdde', Differ::REMOVE),
-                    array('abcde', Differ::ADD)
-                ),
+                'adc',
+            ],
+            [
+                [
+                    ['ab', Differ::REMOVE],
+                    ['abc', Differ::ADD],
+                ],
+                'ab',
+                'abc',
+            ],
+            [
+                [
+                    ['bc', Differ::REMOVE],
+                    ['abc', Differ::ADD],
+                ],
+                'bc',
+                'abc',
+            ],
+            [
+                [
+                    ['abc', Differ::REMOVE],
+                    ['abbc', Differ::ADD],
+                ],
+                'abc',
+                'abbc',
+            ],
+            [
+                [
+                    ['abcdde', Differ::REMOVE],
+                    ['abcde', Differ::ADD],
+                ],
                 'abcdde',
-                'abcde'
-            )
-        );
+                'abcde',
+            ],
+        ];
     }
 
     public function textProvider()
     {
-        return array(
-            array(
+        return [
+            [
                 "--- Original\n+++ New\n@@ @@\n-a\n+b\n",
                 'a',
-                'b'
-            ),
-            array(
+                'b',
+            ],
+            [
                 "--- Original\n+++ New\n@@ @@\n-ba\n+bc\n",
                 'ba',
-                'bc'
-            ),
-            array(
+                'bc',
+            ],
+            [
                 "--- Original\n+++ New\n@@ @@\n-ab\n+cb\n",
                 'ab',
-                'cb'
-            ),
-            array(
+                'cb',
+            ],
+            [
                 "--- Original\n+++ New\n@@ @@\n-abc\n+adc\n",
                 'abc',
-                'adc'
-            ),
-            array(
+                'adc',
+            ],
+            [
                 "--- Original\n+++ New\n@@ @@\n-ab\n+abc\n",
                 'ab',
-                'abc'
-            ),
-            array(
+                'abc',
+            ],
+            [
                 "--- Original\n+++ New\n@@ @@\n-bc\n+abc\n",
                 'bc',
-                'abc'
-            ),
-            array(
+                'abc',
+            ],
+            [
                 "--- Original\n+++ New\n@@ @@\n-abc\n+abbc\n",
                 'abc',
-                'abbc'
-            ),
-            array(
+                'abbc',
+            ],
+            [
                 "--- Original\n+++ New\n@@ @@\n-abcdde\n+abcde\n",
                 'abcdde',
-                'abcde'
-            ),
-            array(
+                'abcde',
+            ],
+            [
                 "--- Original\n+++ New\n@@ @@\n-a\t\n+b\t\n",
                 "a\t",
                 "b\t",
-            )
-        );
+            ],
+        ];
     }
 
     public function escapeControlCharsProvider()

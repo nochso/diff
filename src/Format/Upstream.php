@@ -1,5 +1,4 @@
 <?php
-
 namespace nochso\Diff\Format;
 
 use nochso\Omni\Multiline;
@@ -12,9 +11,9 @@ class Upstream implements Formatter
 {
     const HEADER_DEFAULT = ['--- Original', '+++ New'];
 
-    private $showNonDiffLines   = true;
+    private $showNonDiffLines = true;
     private $escapeControlChars = false;
-    private $header             = self::HEADER_DEFAULT;
+    private $header = self::HEADER_DEFAULT;
 
     /**
      * @param bool $enable
@@ -24,7 +23,6 @@ class Upstream implements Formatter
     public function showNonDiffLines($enable = true)
     {
         $this->showNonDiffLines = $enable;
-
         return $this;
     }
 
@@ -36,7 +34,6 @@ class Upstream implements Formatter
     public function escapeControlChars($enable = true)
     {
         $this->escapeControlChars = $enable;
-
         return $this;
     }
 
@@ -50,12 +47,11 @@ class Upstream implements Formatter
 
     public function format($diff, $messages = [])
     {
-        $lines  = new Multiline(array_merge($this->header, $messages));
+        $lines = new Multiline(array_merge($this->header, $messages));
         $lines->setEol("\n");
         $inOld = false;
-        $i     = 0;
-        $old   = array();
-
+        $i = 0;
+        $old = [];
         foreach ($diff as $line) {
             if ($line[1] ===  0 /* OLD */) {
                 if ($inOld === false) {
@@ -65,36 +61,29 @@ class Upstream implements Formatter
                 if (($i - $inOld) > 5) {
                     $old[$inOld] = $i - 1;
                 }
-
                 $inOld = false;
             }
 
             ++$i;
         }
-
         $start = isset($old[0]) ? $old[0] : 0;
-        $end   = count($diff);
-
+        $end = count($diff);
         if ($tmp = array_search($end, $old)) {
             $end = $tmp;
         }
-
         $newChunk = true;
-
-        for ($i = $start; $i < $end; $i++) {
+        for ($i = $start; $i < $end; ++$i) {
             if (isset($old[$i])) {
                 $lines->add('');
                 $newChunk = true;
-                $i        = $old[$i];
+                $i = $old[$i];
             }
-
             if ($newChunk) {
                 if ($this->showNonDiffLines === true) {
                     $lines->add('@@ @@');
                 }
                 $newChunk = false;
             }
-
             if ($diff[$i][1] === 1 /* ADDED */) {
                 $lines->add('+' . $diff[$i][0]);
             } elseif ($diff[$i][1] === 2 /* REMOVED */) {
@@ -103,14 +92,12 @@ class Upstream implements Formatter
                 $lines->add(' ' . $diff[$i][0]);
             }
         }
-
         if ($this->escapeControlChars) {
             $lines->apply(function ($line) {
                 return Strings::escapeControlChars($line);
             });
         }
         $lines->add('');
-
         return (string) $lines;
     }
 }

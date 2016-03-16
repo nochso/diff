@@ -7,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace nochso\Diff;
 
 use nochso\Omni\Multiline;
@@ -24,21 +23,19 @@ class Parser
      */
     public function parse($string)
     {
-        $lines     = Multiline::create($string)->toArray();
+        $lines = Multiline::create($string)->toArray();
         $lineCount = count($lines);
-        $diffs     = array();
-        $diff      = null;
-        $collected = array();
-
+        $diffs = [];
+        $diff = null;
+        $collected = [];
         for ($i = 0; $i < $lineCount; ++$i) {
             if (preg_match('(^---\\s+(?P<file>\\S+))', $lines[$i], $fromMatch) &&
                 preg_match('(^\\+\\+\\+\\s+(?P<file>\\S+))', $lines[$i + 1], $toMatch)) {
                 if ($diff !== null) {
                     $this->parseFileDiff($diff, $collected);
-                    $diffs[]   = $diff;
-                    $collected = array();
+                    $diffs[] = $diff;
+                    $collected = [];
                 }
-
                 $diff = new Diff($fromMatch['file'], $toMatch['file']);
                 ++$i;
             } else {
@@ -48,12 +45,10 @@ class Parser
                 $collected[] = $lines[$i];
             }
         }
-
         if (count($collected) && ($diff !== null)) {
             $this->parseFileDiff($diff, $collected);
             $diffs[] = $diff;
         }
-
         return $diffs;
     }
 
@@ -63,8 +58,7 @@ class Parser
      */
     private function parseFileDiff(Diff $diff, array $lines)
     {
-        $chunks = array();
-
+        $chunks = [];
         foreach ($lines as $line) {
             if (preg_match('/^@@\s+-(?P<start>\d+)(?:,\s*(?P<startrange>\d+))?\s+\+(?P<end>\d+)(?:,\s*(?P<endrange>\d+))?\s+@@/', $line, $match)) {
                 $chunk = new Chunk(
@@ -73,29 +67,23 @@ class Parser
                     $match['end'],
                     isset($match['endrange']) ? max(1, $match['endrange']) : 1
                 );
-
-                $chunks[]  = $chunk;
-                $diffLines = array();
+                $chunks[] = $chunk;
+                $diffLines = [];
                 continue;
             }
-
             if (preg_match('/^(?P<type>[+ -])?(?P<line>.*)/', $line, $match)) {
                 $type = Line::UNCHANGED;
-
                 if ($match['type'] == '+') {
                     $type = Line::ADDED;
                 } elseif ($match['type'] == '-') {
                     $type = Line::REMOVED;
                 }
-
                 $diffLines[] = new Line($type, $match['line']);
-
                 if (isset($chunk)) {
                     $chunk->setLines($diffLines);
                 }
             }
         }
-
         $diff->setChunks($chunks);
     }
 }

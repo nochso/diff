@@ -1,5 +1,4 @@
 <?php
-
 namespace nochso\Diff\LCS;
 
 class MemoryEfficientImplementationTest extends ImplementationTest

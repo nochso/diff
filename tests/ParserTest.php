@@ -7,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace nochso\Diff;
 
 class ParserTest extends \PHPUnit_Framework_TestCase
@@ -19,7 +18,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->parser = new Parser;
+        $this->parser = new Parser();
     }
 
     public function testParse()
