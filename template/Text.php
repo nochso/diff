@@ -5,6 +5,6 @@
 
 <?php endforeach; ?>
 <?php endif; ?>
-<?php foreach ($this->getDiff() as $key => $line): ?>
+<?php foreach ($this->getDiff()->yieldDiffLines() as $key => $line): ?>
 <?= $key > 0 ?"\n":'' ?><?= $this->formatLineNumber($line) ?><?= $this->formatLine($line) ?>
 <?php endforeach; ?>

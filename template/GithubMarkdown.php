@@ -6,10 +6,8 @@
 <?php endforeach; ?>
 
 <?php endif; ?>
-<?php $lines = $this->getDiff(); ?>
-<?php $lineCount = count($lines); ?>
 ```diff
-<?php foreach ($lines as $key => $line): ?>
+<?php foreach ($this->getDiff()->yieldDiffLines() as $key => $line): ?>
 <?= $this->formatLine($line) ?>
 
 <?php endforeach; ?>
