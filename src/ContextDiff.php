@@ -15,10 +15,6 @@ class ContextDiff
      * @var int
      */
     private $maxContext = self::MAX_CONTEXT_DEFAULT;
-    /**
-     * @var bool
-     */
-    private $lineNumberEnabled = true;
 
     /**
      * parseFullDiff trims a full diff down to surround context lines.
@@ -103,29 +99,8 @@ class ContextDiff
         $this->maxContext = (int) $maxContext;
     }
 
-    public function enableLineNumber()
-    {
-        $this->lineNumberEnabled = true;
-    }
-
-    public function disableLineNumber()
-    {
-        $this->lineNumberEnabled = false;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isLineNumberEnabled()
-    {
-        return $this->lineNumberEnabled;
-    }
-
     private function addLineNumbersToFullDiff(&$fullDiff)
     {
-        if (!$this->isLineNumberEnabled()) {
-            return;
-        }
         $lineNumber = 0;
         foreach ($fullDiff as $key => $line) {
             if ($line[DiffLine::ACTION] !== Differ::ADD) {
