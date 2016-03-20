@@ -3,7 +3,6 @@ namespace nochso\Diff\Format;
 
 use nochso\Diff\Diff;
 use nochso\Omni\Multiline;
-use nochso\Omni\Strings;
 
 /**
  * UpstreamFormatter tries to mirror the default behaviour of sebastianbergmann/diff.
@@ -13,7 +12,6 @@ class Upstream implements Formatter
     const HEADER_DEFAULT = ['--- Original', '+++ New'];
 
     private $showNonDiffLines = true;
-    private $escapeControlChars = false;
     private $header = self::HEADER_DEFAULT;
 
     /**
@@ -24,17 +22,6 @@ class Upstream implements Formatter
     public function showNonDiffLines($enable = true)
     {
         $this->showNonDiffLines = $enable;
-        return $this;
-    }
-
-    /**
-     * @param bool $enable
-     *
-     * @return $this
-     */
-    public function escapeControlChars($enable = true)
-    {
-        $this->escapeControlChars = $enable;
         return $this;
     }
 
@@ -95,11 +82,6 @@ class Upstream implements Formatter
             } elseif ($this->showNonDiffLines === true) {
                 $lines->add(' ' . $diffLines[$i]->getText());
             }
-        }
-        if ($this->escapeControlChars) {
-            $lines->apply(function ($line) {
-                return Strings::escapeControlChars($line);
-            });
         }
         $lines->add('');
         return (string) $lines;

@@ -55,19 +55,6 @@ class DifferTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param string $expected
-     * @param string $from
-     * @param string $to
-     * @dataProvider escapeControlCharsProvider
-     */
-    public function testTextRepresentationOfDiffProperlyEscapesControlChars($expected, $from, $to)
-    {
-        $formatter = new Upstream();
-        $formatter->escapeControlChars();
-        $this->assertEquals($expected, $formatter->format(Diff::create($from, $to)));
-    }
-
-    /**
      * @param array  $expected
      * @param string $from
      * @param string $to
@@ -259,17 +246,6 @@ class DifferTest extends \PHPUnit_Framework_TestCase
                 "--- Original\n+++ New\n@@ @@\n-a\t\n+b\t\n",
                 "a\t",
                 "b\t",
-            ],
-        ];
-    }
-
-    public function escapeControlCharsProvider()
-    {
-        return [
-            [
-                "--- Original\n+++ New\n@@ @@\n a\n-b\n+b\\r\n c\n-d\\r\n+d\n",
-                "a\nb\nc\nd\r",
-                "a\nb\r\nc\nd",
             ],
         ];
     }
