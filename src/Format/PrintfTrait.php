@@ -1,14 +1,14 @@
 <?php
 namespace nochso\Diff\Format;
 
-use nochso\Diff\Differ;
+use nochso\Diff\DiffLine;
 
 /**
  * PrintfTrait for simple line formatting using printf() formats.
  *
  * `setLineCount()` must be called before using it in a template. `Differ` should do this for you by default.
  *
- * @todo Refactor this into an object "PrintfHelper"
+ * @todo Refactor this into an object "PrintfHelper" or into PhpTemplate
  */
 trait PrintfTrait
 {
@@ -18,32 +18,33 @@ trait PrintfTrait
     protected $lineNumberFormat = '%s:';
 
     /**
-     * @param mixed[] $line
+     * @param \nochso\Diff\DiffLine $line
      *
      * @return string
      */
-    public function formatLine($line)
+    public function formatLine(DiffLine $line)
     {
         $format = $this->sameFormat;
-        if ($line[1] === Differ::ADD) {
+        if ($line->isAddition()) {
             $format = $this->addFormat;
-        } elseif ($line[1] === Differ::REMOVE) {
+        } elseif ($line->isRemoval()) {
             $format = $this->removeFormat;
         }
-        return sprintf($format, $line[0]);
+        return sprintf($format, $this->escape($line->getText()));
     }
 
     /**
-     * @param mixed[] $line
+     * @param \nochso\Diff\DiffLine $line
      *
      * @return string
      */
-    public function formatLineNumber($line)
+    public function formatLineNumber(DiffLine $line)
     {
-        if ($line[1] !== Differ::ADD) {
-            $paddedLineNumber = str_pad($line[2], $this->getLineCountLength(), ' ', STR_PAD_LEFT);
+        $lineCountLength = strlen($this->getDiff()->getMaxLineNumber());
+        if (!$line->isAddition()) {
+            $paddedLineNumber = str_pad($line->getLineNumberFrom(), $lineCountLength, ' ', STR_PAD_LEFT);
         } else {
-            $paddedLineNumber = str_pad('', $this->getLineCountLength(), ' ', STR_PAD_LEFT);
+            $paddedLineNumber = str_pad('', $lineCountLength, ' ', STR_PAD_LEFT);
         }
         $foo = sprintf($this->lineNumberFormat, $paddedLineNumber);
         return $foo;
@@ -73,19 +74,5 @@ trait PrintfTrait
         if ($lineNumber !== null) {
             $this->lineNumberFormat = $lineNumber;
         }
-    }
-
-    /**
-     * @return int
-     *
-     * @todo Move this up to PhpTemplate?
-     */
-    private function getLineCountLength()
-    {
-        $diff = $this->getDiff();
-        end($diff);
-        $lastKey = key($diff);
-        reset($diff);
-        return strlen($lastKey);
     }
 }
