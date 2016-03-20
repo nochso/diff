@@ -1,7 +1,7 @@
 <?php
 namespace nochso\Diff\Format\Template;
 
-use nochso\Diff\Differ;
+use nochso\Diff\Diff;
 use nochso\Diff\TestProvider;
 
 class GithubMarkdownTest extends \PHPUnit_Framework_TestCase
@@ -20,8 +20,7 @@ class GithubMarkdownTest extends \PHPUnit_Framework_TestCase
      */
     public function testFormat($from, $to, $expected)
     {
-        $diff = new Differ();
-        $output = $diff->diff($from, $to, null, new GithubMarkdown());
+        $output = (new GithubMarkdown())->format(Diff::create($from, $to));
         $this->assertSame($expected, $output);
     }
 
@@ -39,10 +38,9 @@ class GithubMarkdownTest extends \PHPUnit_Framework_TestCase
      */
     public function testShowLineNumber($from, $to, $expected)
     {
-        $diff = new Differ();
-        $formatter = new GithubMarkdown();
-        $formatter->showLineNumber();
-        $output = $diff->diff($from, $to, null, $formatter);
+        $gh = new GithubMarkdown();
+        $gh->showLineNumber();
+        $output = $gh->format(Diff::create($from, $to));
         $this->assertSame($expected, $output);
     }
 }

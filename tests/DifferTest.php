@@ -49,7 +49,9 @@ class DifferTest extends \PHPUnit_Framework_TestCase
      */
     public function testTextRepresentationOfDiffCanBeRenderedUsingTimeEfficientLcsImplementation($expected, $from, $to)
     {
-        $this->assertEquals($expected, $this->differ->diff($from, $to, new TimeEfficientImplementation()));
+        $diff = Diff::create($from, $to, null, new TimeEfficientImplementation());
+        $formatter = new Upstream();
+        $this->assertEquals($expected, $formatter->format($diff));
     }
 
     /**
@@ -62,7 +64,7 @@ class DifferTest extends \PHPUnit_Framework_TestCase
     {
         $formatter = new Upstream();
         $formatter->escapeControlChars();
-        $this->assertEquals($expected, $this->differ->diff($from, $to, null, $formatter));
+        $this->assertEquals($expected, $formatter->format(Diff::create($from, $to)));
     }
 
     /**
@@ -88,7 +90,10 @@ class DifferTest extends \PHPUnit_Framework_TestCase
      */
     public function testTextRepresentationOfDiffCanBeRenderedUsingMemoryEfficientLcsImplementation($expected, $from, $to)
     {
-        $this->assertEquals($expected, $this->differ->diff($from, $to, new MemoryEfficientImplementation()));
+        $diff = Diff::create($from, $to, null, new MemoryEfficientImplementation());
+        $formatter = new Upstream();
+        $formatter->format($diff);
+        $this->assertEquals($expected, $formatter->format($diff));
     }
 
     /**
@@ -96,22 +101,18 @@ class DifferTest extends \PHPUnit_Framework_TestCase
      */
     public function testCustomHeaderCanBeUsed()
     {
-        $differ = new Differ();
         $formatter = new Upstream();
         $formatter->setHeader(['CUSTOM HEADER']);
-
-        $this->assertEquals(
-            "CUSTOM HEADER\n@@ @@\n-a\n+b\n",
-            $differ->diff('a', 'b', null, $formatter)
-        );
+        $diff = Diff::create('a', 'b');
+        $this->assertEquals("CUSTOM HEADER\n@@ @@\n-a\n+b\n", $formatter->format($diff));
     }
 
     public function testTypesOtherThanArrayAndStringCanBePassed()
     {
-        $this->assertEquals(
-            "--- Original\n+++ New\n@@ @@\n-1\n+2\n",
-            $this->differ->diff(1, 2)
-        );
+        $expected = "--- Original\n+++ New\n@@ @@\n-1\n+2\n";
+        $diff = Diff::create(1, 2);
+        $formatter = new Upstream();
+        $this->assertEquals($expected, $formatter->format($diff));
     }
 
     /**
@@ -119,14 +120,13 @@ class DifferTest extends \PHPUnit_Framework_TestCase
      */
     public function testLineEndingWarning($from, $to, $expectedFromEol, $expectedToEol)
     {
-        $diff = $this->differ->diff($from, $to);
+        $formatter = new Upstream();
+        $diff = $formatter->format(Diff::create($from, $to));
         // No warning
         if ($expectedFromEol === null) {
             $this->assertNotRegExp('/#Warning: Line ending changed from .+ to .+$/m', $diff);
-
             return;
         }
-
         $fromEolName = (new EOL($expectedFromEol))->getName();
         $toEolName = (new EOL($expectedToEol))->getName();
         $pattern = sprintf('/^#Warning: Line ending changed from %s to %s$/m', preg_quote($fromEolName), preg_quote($toEolName));

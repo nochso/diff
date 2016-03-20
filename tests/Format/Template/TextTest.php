@@ -1,7 +1,8 @@
 <?php
 namespace nochso\Diff\Format\Template;
 
-use nochso\Diff\Differ;
+use nochso\Diff\ContextDiff;
+use nochso\Diff\Diff;
 use nochso\Diff\TestProvider;
 
 class TextTest extends \PHPUnit_Framework_TestCase
@@ -20,8 +21,9 @@ class TextTest extends \PHPUnit_Framework_TestCase
      */
     public function testText($from, $to, $expected)
     {
-        $differ = new Differ();
-        $output = $differ->diff($from, $to, null, new Text());
+        $diff = Diff::create($from, $to);
+        $formatter = new Text();
+        $output = $formatter->format($diff);
         $this->assertSame($expected, $output);
     }
 
@@ -33,18 +35,17 @@ class TextTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider contextProvider
      *
-     * @param int    $context
+     * @param int    $maxContext
      * @param string $from
      * @param string $to
      * @param string $expected
      */
-    public function testContext($context, $from, $to, $expected)
+    public function testContext($maxContext, $from, $to, $expected)
     {
-        $differ = new Differ();
+        $context = new ContextDiff();
+        $context->setMaxContext($maxContext);
+        $diff = Diff::create($from, $to, $context);
         $formatter = new Text();
-        $formatter->getContextDiff()->setMaxContext($context);
-
-        $output = $differ->diff($from, $to, null, $formatter);
-        $this->assertSame($expected, $output);
+        $this->assertSame($expected, $formatter->format($diff));
     }
 }

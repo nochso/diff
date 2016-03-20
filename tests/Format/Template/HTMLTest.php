@@ -1,7 +1,7 @@
 <?php
 namespace nochso\Diff\Format\Template;
 
-use nochso\Diff\Differ;
+use nochso\Diff\Diff;
 use nochso\Diff\TestProvider;
 
 class HTMLTest extends \PHPUnit_Framework_TestCase
@@ -20,8 +20,8 @@ class HTMLTest extends \PHPUnit_Framework_TestCase
      */
     public function testFormat($from, $to, $expected)
     {
-        $diff = new Differ();
-        $output = $diff->diff($from, $to, null, new HTML());
+        $diff = Diff::create($from, $to);
+        $output = (new HTML())->format($diff);
         $this->assertSame($expected, $output);
     }
 
@@ -39,10 +39,9 @@ class HTMLTest extends \PHPUnit_Framework_TestCase
      */
     public function testShowLineNumber($from, $to, $expected)
     {
-        $diff = new Differ();
         $formatter = new HTML();
         $formatter->showLineNumber();
-        $output = $diff->diff($from, $to, null, $formatter);
+        $output = $formatter->format(Diff::create($from, $to));
         $this->assertSame($expected, $output);
     }
 }

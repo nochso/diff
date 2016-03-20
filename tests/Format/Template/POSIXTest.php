@@ -1,7 +1,7 @@
 <?php
 namespace nochso\Diff\Format\Template;
 
-use nochso\Diff\Differ;
+use nochso\Diff\Diff;
 use nochso\Diff\Format\CliEscaper;
 use nochso\Diff\TestProvider;
 
@@ -21,8 +21,7 @@ class POSIXTest extends \PHPUnit_Framework_TestCase
      */
     public function testFormat($from, $to, $expected)
     {
-        $diff = new Differ();
-        $output = $diff->diff($from, $to, null, new POSIX());
+        $output = (new POSIX())->format(Diff::create($from, $to));
         $this->assertSame($expected, $output);
     }
 
@@ -40,10 +39,9 @@ class POSIXTest extends \PHPUnit_Framework_TestCase
      */
     public function testCliEscaper($from, $to, $expected)
     {
-        $diff = new Differ();
         $formatter = new POSIX();
         $formatter->setEscaper(new CliEscaper());
-        $output = $diff->diff($from, $to, null, $formatter);
+        $output = $formatter->format(Diff::create($from, $to));
         $this->assertSame($expected, $output);
     }
 
