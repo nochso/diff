@@ -2,8 +2,7 @@
 namespace nochso\Diff\Format\Template;
 
 use nochso\Diff\ContextDiff;
-use nochso\Diff\Differ;
-use nochso\Diff\DiffLine;
+use nochso\Diff\Diff;
 use nochso\Diff\Format\Formatter;
 use nochso\Omni\Path;
 
@@ -28,26 +27,13 @@ class PhpTemplate implements Formatter
      */
     protected $maxContext = self::MAX_CONTEXT_DEFAULT;
     /**
-     * diff lines as prepared by this class.
-     *
-     * @var mixed[][]
+     * @var \nochso\Diff\Diff
      */
     protected $diff;
-    /**
-     * fullDiff lines as provided by Differ.
-     *
-     * @var mixed[][]
-     */
-    protected $fullDiff;
-    /**
-     * @var string[]
-     */
-    protected $messages;
     /**
      * @var bool
      */
     protected $showLineNumber = false;
-
     /**
      * @var string
      */
@@ -61,7 +47,7 @@ class PhpTemplate implements Formatter
      */
     private $escaper;
     /**
-     * @var ContextDiff
+     * @var \nochso\Diff\ContextDiff
      */
     private $contextDiff;
 
@@ -75,16 +61,13 @@ class PhpTemplate implements Formatter
     /**
      * Format an array diff by using plain PHP templates.
      *
-     * @param mixed[][] $diff     The result of Differ::diffToArray
-     * @param string[]  $messages Optional array of messages or warnings.
+     * @param \nochso\Diff\Diff $diff
      *
      * @return mixed
      */
-    public function format($diff, $messages = [])
+    public function format(Diff $diff)
     {
-        $this->fullDiff = $diff;
-        $this->diff = null;
-        $this->messages = $messages;
+        $this->diff = $diff;
         ob_start();
         include Path::combine($this->basePath, $this->path);
         return ob_get_clean();
@@ -110,48 +93,19 @@ class PhpTemplate implements Formatter
 
     public function getMessages()
     {
-        return $this->messages;
+        return $this->diff->getMessages();
     }
 
+    /**
+     * @return \nochso\Diff\Diff
+     */
     public function getDiff()
     {
-        if ($this->diff === null) {
-            $this->prepareDiff();
-        }
         return $this->diff;
     }
 
     /**
-     * getDiffWithCommonContext returns added/removed lines with a maximum context of surrounding common lines.
-     *
-     * @see setMaxContext()
-     *
-     * @return mixed[][]
-     */
-    public function prepareDiff()
-    {
-        $this->diff = $this->contextDiff->create($this->fullDiff);
-        $this->escapeLines();
-    }
-
-    /**
-     * @return ContextDiff
-     */
-    public function getContextDiff()
-    {
-        return $this->contextDiff;
-    }
-
-    /**
-     * @param ContextDiff $contextDiff
-     */
-    public function setContextDiff($contextDiff)
-    {
-        $this->contextDiff = $contextDiff;
-    }
-
-    /**
-     * @param callable $callable
+     * @param callable|null $callable
      */
     public function setEscaper($callable = null)
     {
@@ -169,14 +123,5 @@ class PhpTemplate implements Formatter
             return $input;
         }
         return $this->escaper->escape($input);
-    }
-
-    private function escapeLines()
-    {
-        if ($this->escaper !== null) {
-            foreach ($this->diff as &$line) {
-                $line[DiffLine::TEXT] = $this->escape($line[DiffLine::TEXT]);
-            }
-        }
     }
 }
