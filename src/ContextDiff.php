@@ -59,7 +59,7 @@ class ContextDiff
      *
      * @return array
      */
-    public function getChangeRanges($fullDiff)
+    public function extractChangeRanges($fullDiff)
     {
         $ranges = [];
         $start = null;
@@ -123,7 +123,7 @@ class ContextDiff
     {
         $keepers = [];
         $diffCount = count($this->fullDiff);
-        $changeRanges = $this->getChangeRanges($this->fullDiff);
+        $changeRanges = $this->extractChangeRanges($this->fullDiff);
         foreach ($changeRanges as $changeRange) {
             // Prevent lower and upper out of bounds access
             $contextStart = max(0, $changeRange[0] - $this->maxContext);
