@@ -1,0 +1,66 @@
+Basic subtitution using line numbers
+===
+a
+b
+===
+a
+c
+===
+<pre>1: a
+2: <del>b</del>
+ : <ins>c</ins></pre>
+###
+Line numbers must be left-padded
+===
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+===
+1
+2
+3
+5
+6
+7
+8
+oops
+9
+10
+11
+===
+<pre> 1: 1
+ 2: 2
+ 3: 3
+ 4: <del>4</del>
+ 5: 5
+ 6: 6
+ 7: 7
+ 8: 8
+  : <ins>oops</ins>
+ 9: 9
+10: 10
+11: 11</pre>
+###
+Line numbers must be based on before string
+===
+1
+2
+3
+4
+===
+1
+5
+===
+<pre>1: 1
+2: <del>2</del>
+3: <del>3</del>
+4: <del>4</del>
+ : <ins>5</ins></pre>

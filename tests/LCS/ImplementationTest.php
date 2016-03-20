@@ -11,6 +11,7 @@ namespace nochso\Diff\LCS;
 
 /**
  * Some of these tests are voluntarily stressful in order to give some approximate benchmark hints.
+ * To skip these, use `--exclude-group large` when running PHPUnit.
  */
 abstract class ImplementationTest extends \PHPUnit_Framework_TestCase
 {
@@ -62,6 +63,9 @@ abstract class ImplementationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $common);
     }
 
+    /**
+     * @group large
+     */
     public function testEqualSequences()
     {
         foreach ($this->stress_sizes as $size) {
@@ -74,6 +78,9 @@ abstract class ImplementationTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+     * @group large
+     */
     public function testDistinctSequences()
     {
         $from = ['A'];
@@ -94,6 +101,9 @@ abstract class ImplementationTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+     * @group large
+     */
     public function testCommonSubsequence()
     {
         $from = ['A',      'C',      'E', 'F', 'G'];
@@ -151,6 +161,9 @@ abstract class ImplementationTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+     * @large
+     */
     public function testReversedSequences()
     {
         $from = ['A', 'B'];

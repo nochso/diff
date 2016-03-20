@@ -1,0 +1,18 @@
+Basic substitution
+===
+a
+b
+===
+a
+c
+===
+1:  a
+2: -b
+ : +c
+###
+No change
+===
+a
+===
+a
+===

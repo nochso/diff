@@ -1,0 +1,36 @@
+Basic substitution
+===
+a
+b
+===
+a
+c
+===
+```diff
+ 1: a
+-2: b
++ : c
+```
+###
+No change
+===
+a
+===
+a
+===
+```diff
+```
+###
+Must escape HTML
+===
+a<
+&
+===
+a<
+c
+===
+```diff
+ 1: a&lt;
+-2: &amp;
++ : c
+```

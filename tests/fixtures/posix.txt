@@ -1,0 +1,18 @@
+Basic substitution
+===
+a
+b
+===
+a
+c
+===
+1: a
+2: [31mb[0m
+ : [32mc[0m
+###
+No change
+===
+a
+===
+a
+===

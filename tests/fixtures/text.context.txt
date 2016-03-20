@@ -1,0 +1,111 @@
+Basic substitution with no context at all
+===
+0
+===
+a
+b
+===
+a
+c
+===
+2: -b
+ : +c
+###
+No change and no context
+===
+0
+===
+a
+===
+a
+===
+###
+Few changes and all lines as context
+===
+-1
+===
+a
+b
+c
+d
+e
+f
+g
+h
+===
+a
+b
+c
+d
+e
+f
+X
+h
+===
+1:  a
+2:  b
+3:  c
+4:  d
+5:  e
+6:  f
+7: -g
+ : +X
+8:  h
+###
+Few changes and one line of context
+===
+1
+===
+a
+b
+c
+d
+e
+f
+g
+h
+===
+a
+b
+c
+d
+e
+f
+X
+h
+===
+6:  f
+7: -g
+ : +X
+8:  h
+###
+Few changes and one combined line of context
+===
+1
+===
+a
+b
+c
+d
+e
+f
+g
+h
+===
+a
+b
+c
+Y
+e
+f
+X
+h
+===
+3:  c
+4: -d
+ : +Y
+5:  e
+6:  f
+7: -g
+ : +X
+8:  h

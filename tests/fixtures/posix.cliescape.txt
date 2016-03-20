@@ -1,0 +1,18 @@
+Basic substitution
+===
+a\t
+b
+===
+a\t
+c
+===
+1: "a\t"
+2: [31m"b"[0m
+ : [32m"c"[0m
+###
+No change
+===
+a\t
+===
+a\t
+===

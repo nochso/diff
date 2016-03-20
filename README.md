@@ -1,26 +1,37 @@
-# Diff
+# nochso/diff
 
-Diff implementation for PHP, factored out of PHPUnit into a stand-alone component.
+> Namespace: `\nochso\Diff`
+
+Diff implementation for PHP with support for text, HTML and console output out of the box.
+
+This library is a fork of [sebastian/diff](https://github.com/sebastianbergmann/diff): While the original diff
+implementation has not notably changed, everything else has been refactored and opened up for extension and re-use:
+
+- `Upstream` formatter that tries to retain the output as you know it from `sebastian/diff` as used by PHPUnit.
+- Optional line numbering based on the "before" string.
+- Plain PHP templates for displaying diffs in:
+  - Plain text
+  - Colored POSIX console output
+  - HTML
 
 ## Installation
 
-To add this package as a local, per-project dependency to your project, simply add a dependency on `sebastian/diff` to your project's `composer.json` file. Here is a minimal example of a `composer.json` file that just defines a dependency on Diff:
-
-    {
-        "require": {
-            "sebastian/diff": "*"
-        }
-    }
+```
+composer require nochso/diff
+```
 
 ### Usage
+
+### Writing your own templates
+It's best to have a look at the existing templates.
 
 The `Differ` class can be used to generate a textual representation of the difference between two strings:
 
 ```php
-use SebastianBergmann\Diff\Differ;
+use nochso\Diff\Differ;
 
-$differ = new Differ;
-print $differ->diff('foo', 'bar');
+$differ = new Differ();
+echo $differ->diff('foo', 'bar');
 ```
 
 The code above yields the output below:

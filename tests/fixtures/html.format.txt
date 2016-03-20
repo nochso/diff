@@ -1,0 +1,31 @@
+Basic substitution
+===
+a
+b
+===
+a
+c
+===
+<pre>a
+<del>b</del>
+<ins>c</ins></pre>
+###
+No change
+===
+a
+===
+a
+===
+<pre></pre>
+###
+Must escape HTML
+===
+a<
+&
+===
+a<
+c
+===
+<pre>a&lt;
+<del>&amp;</del>
+<ins>c</ins></pre>
