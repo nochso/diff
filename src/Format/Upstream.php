@@ -1,6 +1,7 @@
 <?php
 namespace nochso\Diff\Format;
 
+use nochso\Diff\Diff;
 use nochso\Omni\Multiline;
 use nochso\Omni\Strings;
 
@@ -45,15 +46,18 @@ class Upstream implements Formatter
         $this->header = $headerLines;
     }
 
-    public function format($diff, $messages = [])
+    public function format(Diff $diff)
     {
-        $lines = new Multiline(array_merge($this->header, $messages));
+        $messages = new Multiline($diff->getMessages());
+        $messages->prefix('#');
+        $lines = new Multiline(array_merge($this->header, $messages->toArray()));
         $lines->setEol("\n");
         $inOld = false;
         $i = 0;
         $old = [];
-        foreach ($diff as $line) {
-            if ($line[1] ===  0 /* OLD */) {
+        $diffLines = $diff->getDiffLines();
+        foreach ($diffLines as $line) {
+            if ($line->isSame()) {
                 if ($inOld === false) {
                     $inOld = $i;
                 }
@@ -67,7 +71,7 @@ class Upstream implements Formatter
             ++$i;
         }
         $start = isset($old[0]) ? $old[0] : 0;
-        $end = count($diff);
+        $end = count($diffLines);
         if ($tmp = array_search($end, $old)) {
             $end = $tmp;
         }
@@ -84,12 +88,12 @@ class Upstream implements Formatter
                 }
                 $newChunk = false;
             }
-            if ($diff[$i][1] === 1 /* ADDED */) {
-                $lines->add('+' . $diff[$i][0]);
-            } elseif ($diff[$i][1] === 2 /* REMOVED */) {
-                $lines->add('-' . $diff[$i][0]);
+            if ($diffLines[$i]->isAddition()) {
+                $lines->add('+' . $diffLines[$i]->getText());
+            } elseif ($diffLines[$i]->isRemoval()) {
+                $lines->add('-' . $diffLines[$i]->getText());
             } elseif ($this->showNonDiffLines === true) {
-                $lines->add(' ' . $diff[$i][0]);
+                $lines->add(' ' . $diffLines[$i]->getText());
             }
         }
         if ($this->escapeControlChars) {
