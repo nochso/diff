@@ -1,15 +1,16 @@
 <?php
 namespace nochso\Diff\Format;
 
+use nochso\Diff\Diff;
+
 interface Formatter
 {
     /**
-     * Format an array diff.
+     * Format a Diff object.
      *
-     * @param mixed[][] $diff     The result of Differ::diffToArray
-     * @param string[]  $messages Optional array of messages or warnings.
+     * @param \nochso\Diff\Diff $diff
      *
      * @return mixed
      */
-    public function format($diff, $messages = []);
+    public function format(Diff $diff);
 }
