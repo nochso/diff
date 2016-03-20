@@ -1,7 +1,6 @@
 <?php
 namespace nochso\Diff\Format\Template;
 
-use nochso\Diff\Differ;
 use nochso\Diff\DiffLine;
 use nochso\Diff\Format\HTMLEscaper;
 use nochso\Diff\Format\PrintfTrait;
@@ -21,22 +20,23 @@ class GithubMarkdown extends PhpTemplate
     }
 
     /**
-     * @param mixed[] $line
+     * @param \nochso\Diff\DiffLine $line
      *
      * @return string
      */
-    public function formatLine($line)
+    public function formatLine(DiffLine $line)
     {
         $format = $this->sameFormat;
-        if ($line[DiffLine::ACTION] === Differ::ADD) {
+        if ($line->isAddition()) {
             $format = $this->addFormat;
-        } elseif ($line[DiffLine::ACTION] === Differ::REMOVE) {
+        } elseif ($line->isRemoval()) {
             $format = $this->removeFormat;
         }
+        $escapedText = $this->escape($line->getText());
         if ($this->isShowingLineNumber()) {
-            return sprintf($format, sprintf($this->formatLineNumber($line)) . $line[0]);
+            return sprintf($format, sprintf($this->formatLineNumber($line)) . $escapedText);
         } else {
-            return sprintf($format, $line[0]);
+            return sprintf($format, $escapedText);
         }
     }
 }
