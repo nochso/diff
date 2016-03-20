@@ -2,7 +2,7 @@
 namespace nochso\Diff;
 
 /**
- * ContextDiff.
+ * ContextDiff takes a full diff and returns a new diff trimmed to a maximum context between changes.
  *
  * @todo Refactor parts of PhpTemplate into this
  */
@@ -15,9 +15,13 @@ class ContextDiff
      * @var int
      */
     private $maxContext = self::MAX_CONTEXT_DEFAULT;
+    /**
+     * @var mixed[][]
+     */
+    private $fullDiff;
 
     /**
-     * parseFullDiff trims a full diff down to surround context lines.
+     * Create a trimmed diff with a configurable context surrounding changes.
      *
      * @param mixed[][] $fullDiff The result of Differ:diffToArray
      *
@@ -27,16 +31,16 @@ class ContextDiff
      */
     public function create($fullDiff)
     {
-        $this->addLineNumbersToFullDiff($fullDiff);
-        if ($this->maxContext === self::ALL_CONTEXT) {
-            return $fullDiff;
-        }
-        $changeRanges = $this->getChangeRanges($fullDiff);
-        // List of line positions to keep
-        $keepers = $this->getIndexesToKeep($fullDiff, $changeRanges);
         $contextDiff = [];
+        $this->fullDiff = $fullDiff;
+        $this->addLineNumbersToFullDiff();
+        if ($this->maxContext === self::ALL_CONTEXT) {
+            return $this->fullDiff;
+        }
+        // List of line positions to keep
+        $keepers = $this->getIndexesToKeep();
         foreach (array_keys($keepers) as $position => $key) {
-            $contextDiff[] = $fullDiff[$key];
+            $contextDiff[] = $this->fullDiff[$key];
         }
         return $contextDiff;
     }
@@ -99,29 +103,27 @@ class ContextDiff
         $this->maxContext = (int) $maxContext;
     }
 
-    private function addLineNumbersToFullDiff(&$fullDiff)
+    private function addLineNumbersToFullDiff()
     {
         $lineNumber = 0;
-        foreach ($fullDiff as $key => $line) {
+        foreach ($this->fullDiff as $key => $line) {
             if ($line[DiffLine::ACTION] !== Differ::ADD) {
                 ++$lineNumber;
             }
-            $fullDiff[$key][DiffLine::LINE_NUMBER_FROM] = $lineNumber;
+            $this->fullDiff[$key][DiffLine::LINE_NUMBER_FROM] = $lineNumber;
         }
     }
 
     /**
      * getIndexesToKeep returns a map of diff index keys that are to be kept based on the output of getChangeRanges().
      *
-     * @param $fullDiff
-     * @param $changeRanges
-     *
      * @return array Key: Index in diff array. Value: Always true.
      */
-    private function getIndexesToKeep($fullDiff, $changeRanges)
+    private function getIndexesToKeep()
     {
         $keepers = [];
-        $diffCount = count($fullDiff);
+        $diffCount = count($this->fullDiff);
+        $changeRanges = $this->getChangeRanges($this->fullDiff);
         foreach ($changeRanges as $changeRange) {
             // Prevent lower and upper out of bounds access
             $contextStart = max(0, $changeRange[0] - $this->maxContext);
