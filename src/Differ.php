@@ -9,7 +9,6 @@
  */
 namespace nochso\Diff;
 
-use nochso\Diff\Format\Formatter;
 use nochso\Diff\LCS\LongestCommonSubsequence;
 use nochso\Diff\LCS\MemoryEfficientImplementation;
 use nochso\Diff\LCS\TimeEfficientImplementation;
@@ -29,25 +28,6 @@ class Differ
      * @var string[]
      */
     private $messages = [];
-
-    /**
-     * Returns the diff between two arrays or strings as string.
-     *
-     * @param array|string                  $from
-     * @param array|string                  $to
-     * @param LongestCommonSubsequence      $lcs
-     * @param \nochso\Diff\Format\Formatter $formatter
-     *
-     * @return mixed
-     */
-    public function diff($from, $to, LongestCommonSubsequence $lcs = null, Formatter $formatter = null)
-    {
-        if ($formatter === null) {
-            $formatter = new Format\Upstream();
-        }
-        $diff = $this->diffToArray($from, $to, $lcs);
-        return $formatter->format($diff, $this->messages);
-    }
 
     /**
      * Returns the diff between two arrays or strings as array.
