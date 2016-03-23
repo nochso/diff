@@ -3,6 +3,7 @@ namespace nochso\Diff\Format\Template;
 
 use nochso\Diff\ContextDiff;
 use nochso\Diff\Diff;
+use nochso\Diff\Escape\Escaper;
 use nochso\Diff\Format\Formatter;
 use nochso\Omni\Path;
 
@@ -105,11 +106,11 @@ class PhpTemplate implements Formatter
     }
 
     /**
-     * @param callable|null $callable
+     * @param \nochso\Diff\Escape\Escaper $escaper
      */
-    public function setEscaper($callable = null)
+    public function setEscaper(Escaper $escaper = null)
     {
-        $this->escaper = $callable;
+        $this->escaper = $escaper;
     }
 
     /**
