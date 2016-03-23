@@ -34,7 +34,7 @@ class DifferTest extends \PHPUnit_Framework_TestCase
      * @covers       nochso\Diff\Differ::diffToArray
      * @covers       nochso\Diff\LCS\TimeEfficientImplementation
      */
-    public function testArrayRepresentationOfDiffCanBeRenderedUsingTimeEfficientLcsImplementation(array $expected, $from, $to)
+    public function testArrayRepresentationOfDiffCanBeDiffedUsingTimeEfficientLcsImplementation(array $expected, $from, $to)
     {
         $this->assertEquals($expected, $this->differ->diffToArray($from, $to, new TimeEfficientImplementation()));
     }
@@ -62,7 +62,7 @@ class DifferTest extends \PHPUnit_Framework_TestCase
      * @covers       nochso\Diff\Format\Upstream::format
      * @covers       nochso\Diff\LCS\MemoryEfficientImplementation
      */
-    public function testArrayRepresentationOfDiffCanBeRenderedUsingMemoryEfficientLcsImplementation(array $expected, $from, $to)
+    public function testArrayRepresentationOfDiffCanBeDiffedUsingMemoryEfficientLcsImplementation(array $expected, $from, $to)
     {
         $this->assertEquals($expected, $this->differ->diffToArray($from, $to, new MemoryEfficientImplementation()));
     }
