@@ -6,7 +6,13 @@ namespace nochso\Diff;
  */
 class ContextDiff
 {
+    /**
+     * Default maximum amount of lines surrounding modified lines.
+     */
     const MAX_CONTEXT_DEFAULT = 3;
+    /**
+     * If max context is set to this, all lines are kept.
+     */
     const ALL_CONTEXT = -1;
 
     /**
@@ -21,7 +27,7 @@ class ContextDiff
     /**
      * Create a trimmed diff with a configurable context surrounding changes.
      *
-     * @param mixed[][] $fullDiff The result of Differ:diffToArray
+     * @param mixed[][] $fullDiff The result of Differ::diffToArray
      *
      * @return mixed[][] A trimmed down version of the original array with before-based line-numbers at index 2.
      *
@@ -44,7 +50,7 @@ class ContextDiff
     }
 
     /**
-     * getChangeRanges returns the start and end positions of grouped changes.
+     * extractChangeRanges returns the start and end positions of grouped changes.
      *
      * Each element consists of the start and end position:
      *
@@ -53,7 +59,7 @@ class ContextDiff
      * 1 => [14, 14]
      * ```
      *
-     * @param mixed[][] $fullDiff
+     * @param mixed[][] $fullDiff The result of Differ::diffToArray
      *
      * @return array
      */
@@ -90,11 +96,9 @@ class ContextDiff
      *
      * If set to zero, only changed lines are returned.
      *
-     * See the class constants:
-     * - Template::ALL_CONTEXT - Show all lines.
-     * - Template::MAX_CONTEXT_DEFAULT - Show a maximum of 3 context lines.
+     * See the constants of this class for predefined values.
      *
-     * @param int $maxContext
+     * @param int $maxContext Any non-negative integer or one of the class constants.
      */
     public function setMaxContext($maxContext)
     {
