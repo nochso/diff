@@ -2,9 +2,9 @@
 namespace nochso\Diff\Escape;
 
 /**
- * HTMLEscaper escapes HTML using UTF-8 by default.
+ * Html escapes HTML using UTF-8 by default.
  */
-class HTMLEscaper implements Escaper
+class Html implements Escaper
 {
     const DEFAULT_CHARSET = 'UTF-8';
 

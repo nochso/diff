@@ -16,7 +16,7 @@ class GithubMarkdown extends PhpTemplate
     {
         parent::__construct($path, $basePath);
         $this->setPrintfFormats(null, null, null, '%s: ');
-        $this->setEscaper(new Escape\HTMLEscaper());
+        $this->setEscaper(new Escape\Html());
     }
 
     /**

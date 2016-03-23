@@ -12,6 +12,6 @@ class HTML extends PhpTemplate
     {
         parent::__construct($path, $basePath);
         $this->setPrintfFormats('%s', '<ins>%s</ins>', '<del>%s</del>');
-        $this->setEscaper(new Escape\HTMLEscaper());
+        $this->setEscaper(new Escape\Html());
     }
 }
