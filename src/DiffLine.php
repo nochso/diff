@@ -42,7 +42,7 @@ class DiffLine
     }
 
     /**
-     * @return bool
+     * @return bool True if this line was added.
      */
     public function isAddition()
     {
@@ -50,7 +50,7 @@ class DiffLine
     }
 
     /**
-     * @return bool
+     * @return bool True if this line was not modified.
      */
     public function isSame()
     {
@@ -58,7 +58,7 @@ class DiffLine
     }
 
     /**
-     * @return bool
+     * @return bool True if this line was removed.
      */
     public function isRemoval()
     {
