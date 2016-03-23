@@ -1,7 +1,7 @@
 <?php
 namespace nochso\Diff\Format\Template;
 
-use nochso\Diff\Escape\HTMLEscaper;
+use nochso\Diff\Escape;
 use nochso\Diff\Format\PrintfTrait;
 
 class HTML extends PhpTemplate
@@ -12,6 +12,6 @@ class HTML extends PhpTemplate
     {
         parent::__construct($path, $basePath);
         $this->setPrintfFormats('%s', '<ins>%s</ins>', '<del>%s</del>');
-        $this->setEscaper(new HTMLEscaper());
+        $this->setEscaper(new Escape\HTMLEscaper());
     }
 }

@@ -2,7 +2,7 @@
 namespace nochso\Diff\Format\Template;
 
 use nochso\Diff\DiffLine;
-use nochso\Diff\Escape\HTMLEscaper;
+use nochso\Diff\Escape;
 use nochso\Diff\Format\PrintfTrait;
 
 /**
@@ -16,7 +16,7 @@ class GithubMarkdown extends PhpTemplate
     {
         parent::__construct($path, $basePath);
         $this->setPrintfFormats(null, null, null, '%s: ');
-        $this->setEscaper(new HTMLEscaper());
+        $this->setEscaper(new Escape\HTMLEscaper());
     }
 
     /**
