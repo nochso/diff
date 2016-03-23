@@ -32,10 +32,6 @@ class PhpTemplate implements Formatter
      */
     protected $diff;
     /**
-     * @var bool
-     */
-    protected $showLineNumber = false;
-    /**
      * @var string
      */
     private $basePath;
@@ -72,24 +68,6 @@ class PhpTemplate implements Formatter
         ob_start();
         include Path::combine($this->basePath, $this->path);
         return ob_get_clean();
-    }
-
-    /**
-     * showLineNumber based on the from/before string.
-     *
-     * @param bool $showLineNumber
-     */
-    public function showLineNumber($showLineNumber = true)
-    {
-        $this->showLineNumber = $showLineNumber;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isShowingLineNumber()
-    {
-        return $this->showLineNumber;
     }
 
     public function getMessages()
