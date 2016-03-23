@@ -7,9 +7,9 @@ a
 c
 ===
 ```diff
- a
--b
-+c
+ 1: a
+-2: b
++ : c
 ```
 ###
 No change
@@ -30,7 +30,7 @@ a<
 c
 ===
 ```diff
- a&lt;
--&amp;
-+c
+ 1: a&lt;
+-2: &amp;
++ : c
 ```

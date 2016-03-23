@@ -8,7 +8,7 @@ class HTMLTest extends \PHPUnit_Framework_TestCase
 {
     public function formatProvider()
     {
-        return TestProvider::fromFile('html.format.txt');
+        return TestProvider::fromFile('html.txt');
     }
 
     /**
@@ -20,28 +20,29 @@ class HTMLTest extends \PHPUnit_Framework_TestCase
      */
     public function testFormat($from, $to, $expected)
     {
-        $diff = Diff::create($from, $to);
-        $output = (new HTML())->format($diff);
+        $formatter = new HTML();
+        $output = $formatter->format(Diff::create($from, $to));
         $this->assertSame($expected, $output);
     }
 
-    public function showLineNumberProvider()
+    public function formatWithoutLineNumberProvider()
     {
-        return TestProvider::fromFile('html.linenumber.txt');
+        return TestProvider::fromFile('html.without.linenumber.txt');
     }
 
     /**
-     * @dataProvider showLineNumberProvider
+     * @dataProvider formatWithoutLineNumberProvider
      *
      * @param string $from
      * @param string $to
      * @param string $expected
      */
-    public function testShowLineNumber($from, $to, $expected)
+    public function testFormatWithoutLineNumber($from, $to, $expected)
     {
+        $diff = Diff::create($from, $to);
         $formatter = new HTML();
-        $formatter->showLineNumber();
-        $output = $formatter->format(Diff::create($from, $to));
+        $formatter->getPrintf()->disableLineNumber();
+        $output = $formatter->format($diff);
         $this->assertSame($expected, $output);
     }
 }
