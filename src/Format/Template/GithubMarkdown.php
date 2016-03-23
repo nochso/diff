@@ -1,22 +1,68 @@
 <?php
 namespace nochso\Diff\Format\Template;
 
+use nochso\Diff\Diff;
 use nochso\Diff\DiffLine;
 use nochso\Diff\Escape;
-use nochso\Diff\Format\PrintfTrait;
 
 /**
  * GithubMarkdown.
  */
 class GithubMarkdown extends PhpTemplate
 {
-    use PrintfTrait;
+    /**
+     * @var bool
+     */
+    private $isLineNumberEnabled = true;
+    /**
+     * @var int
+     */
+    private $lineCountLength;
 
     public function __construct($path = 'GithubMarkdown.php', $basePath = __DIR__ . '/../../../template')
     {
         parent::__construct($path, $basePath);
-        $this->setPrintfFormats(null, null, null, '%s: ');
         $this->setEscaper(new Escape\Html());
+    }
+
+    public function format(Diff $diff)
+    {
+        $this->lineCountLength = strlen($diff->getMaxLineNumber());
+        return parent::format($diff);
+    }
+
+    public function formatLine(DiffLine $line)
+    {
+        $action = ' ';
+        if ($line->isAddition()) {
+            $action = '+';
+        } elseif ($line->isRemoval()) {
+            $action = '-';
+        }
+        if ($this->isLineNumberEnabled) {
+            $format = $action . '%s: %s';
+            return sprintf($format, $this->formatLineNumber($line), $line->getText());
+        }
+        $format = $action . '%s';
+        return sprintf($format, $line->getText());
+    }
+
+    /**
+     * @return $this
+     */
+    public function enableLineNumber()
+    {
+        $this->isLineNumberEnabled = true;
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function disableLineNumber()
+    {
+        $this->isLineNumberEnabled = false;
+        return $this;
     }
 
     /**
@@ -24,19 +70,12 @@ class GithubMarkdown extends PhpTemplate
      *
      * @return string
      */
-    public function formatLine(DiffLine $line)
+    private function formatLineNumber(DiffLine $line)
     {
-        $format = $this->sameFormat;
-        if ($line->isAddition()) {
-            $format = $this->addFormat;
-        } elseif ($line->isRemoval()) {
-            $format = $this->removeFormat;
+        $number = '';
+        if (!$line->isAddition()) {
+            $number = $line->getLineNumberFrom();
         }
-        $escapedText = $this->escape($line->getText());
-        if ($this->isShowingLineNumber()) {
-            return sprintf($format, sprintf($this->formatLineNumber($line)) . $escapedText);
-        } else {
-            return sprintf($format, $escapedText);
-        }
+        return str_pad($number, $this->lineCountLength, ' ', STR_PAD_LEFT);
     }
 }

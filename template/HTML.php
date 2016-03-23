@@ -6,8 +6,7 @@
 <?php endforeach; ?>
 </ul>
 <?php endif; ?>
-<pre><?php foreach ($this->getDiff()->yieldDiffLines() as $key => $line): ?>
+<pre><?php foreach ($this->getDiff()->getDiffLines() as $key => $line): ?>
 <?= $key > 0 ? "\n" : '' ?>
-<?php if ($this->isShowingLineNumber()): ?><?= $this->formatLineNumber($line) ?> <?php endif; ?>
-<?= $this->formatLine($line) ?>
+<?= $this->printfLine($line) ?>
 <?php endforeach; ?></pre>

@@ -7,7 +7,7 @@
 
 <?php endif; ?>
 ```diff
-<?php foreach ($this->getDiff()->yieldDiffLines() as $key => $line): ?>
+<?php foreach ($this->getDiff()->getDiffLines() as $key => $line): ?>
 <?= $this->formatLine($line) ?>
 
 <?php endforeach; ?>
