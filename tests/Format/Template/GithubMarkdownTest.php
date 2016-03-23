@@ -1,6 +1,7 @@
 <?php
 namespace nochso\Diff\Format\Template;
 
+use nochso\Diff\ContextDiff;
 use nochso\Diff\Diff;
 use nochso\Diff\TestProvider;
 
@@ -42,5 +43,21 @@ class GithubMarkdownTest extends \PHPUnit_Framework_TestCase
         $gh->showLineNumber();
         $output = $gh->format(Diff::create($from, $to));
         $this->assertSame($expected, $output);
+    }
+
+    public function contextProvider()
+    {
+        return TestProvider::fromFile('githubmarkdown.context.txt');
+    }
+    /**
+     * @dataProvider contextProvider
+     */
+    public function testContext($maxContext, $from, $to, $expected)
+    {
+        $gh = new GithubMarkdown();
+        $gh->showLineNumber(true);
+        $context = new ContextDiff();
+        $context->setMaxContext($maxContext);
+        $this->assertEquals($expected, $gh->format(Diff::create($from, $to, $context)));
     }
 }

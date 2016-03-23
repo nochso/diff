@@ -1,0 +1,37 @@
+Test for README example
+===
+2
+===
+Bacon ipsum dolor amet
+pariatur ground round
+dolore meatloaf nisi
+shoulder.
+Consequat rump spare
+ribs ham hock shank.
+Magna esse nisi
+frankfurter picanha
+salami. Enim ground
+round ball tip, ex tail
+incididunt pastrami
+biltong t-bone meatloaf.
+===
+Bacon ipsum dolor amet
+pariatur ground round
+dolore meatloaf nisi
+Consequat rump spare
+Magna esse nisi
+frankfurter picanha
+salami. Enim ground
+round ball tip, ex tail
+incididunt pastrami
+biltong t-bone meatloaf.
+===
+```diff
+ 2: pariatur ground round
+ 3: dolore meatloaf nisi
+-4: shoulder.
+ 5: Consequat rump spare
+-6: ribs ham hock shank.
+ 7: Magna esse nisi
+ 8: frankfurter picanha
+```
