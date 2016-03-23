@@ -2,9 +2,7 @@
 namespace nochso\Diff;
 
 /**
- * ContextDiff takes a full diff and returns a new diff trimmed to a maximum context between changes.
- *
- * @todo Refactor parts of PhpTemplate into this
+ * ContextDiff trims full diffs down to differing lines and surrounding context.
  */
 class ContextDiff
 {
