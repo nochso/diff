@@ -15,7 +15,7 @@ class Html implements Escaper
 
     public function __construct($charset = self::DEFAULT_CHARSET)
     {
-        $this->charset = $charset;
+        $this->setCharset($charset);
     }
 
     /**

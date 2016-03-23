@@ -85,6 +85,7 @@ class DifferTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers nochso\Diff\Format\Upstream::format
+     * @covers nochso\Diff\Format\Upstream::setHeader
      */
     public function testCustomHeaderCanBeUsed()
     {
