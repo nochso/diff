@@ -7,13 +7,9 @@ use nochso\Omni\EOL;
 class Diff
 {
     /**
-     * @var mixed[][]
+     * @var \nochso\Diff\DiffLine[]
      */
-    private $contextDiffLines;
-    /**
-     * @var \nochso\Diff\ContextDiff
-     */
-    private $context;
+    private $diffLines = [];
     /**
      * @var string[]
      */
@@ -35,20 +31,12 @@ class Diff
         if ($context === null) {
             $context = new ContextDiff();
         }
-        $diff->context = $context;
         $diff->addLineEndingWarning($from, $to);
-        $diff->contextDiffLines = $diff->context->create($fullDiffLines);
-        return $diff;
-    }
-
-    /**
-     * @return \Generator|\nochso\Diff\DiffLine[]
-     */
-    public function yieldDiffLines()
-    {
-        foreach ($this->contextDiffLines as $contextDiffLine) {
-            yield new DiffLine($contextDiffLine);
+        $contextDiffLines = $context->create($fullDiffLines);
+        foreach ($contextDiffLines as $contextDiffLine) {
+            $diff->diffLines[] = new DiffLine($contextDiffLine);
         }
+        return $diff;
     }
 
     /**
@@ -56,11 +44,7 @@ class Diff
      */
     public function getDiffLines()
     {
-        $lines = [];
-        foreach ($this->contextDiffLines as $contextDiffLine) {
-            $lines[] = new DiffLine($contextDiffLine);
-        }
-        return $lines;
+        return $this->diffLines;
     }
 
     /**
@@ -68,8 +52,12 @@ class Diff
      */
     public function getMaxLineNumber()
     {
-        $lastKey = count($this->contextDiffLines) - 1;
-        return $this->contextDiffLines[$lastKey][DiffLine::LINE_NUMBER_FROM];
+        $count = count($this->diffLines);
+        if ($count === 0) {
+            return 0;
+        }
+        $lastKey = $count - 1;
+        return $this->diffLines[$lastKey]->getLineNumberFrom();
     }
 
     /**
