@@ -40,7 +40,7 @@ class POSIXTest extends \PHPUnit_Framework_TestCase
     public function testCliEscaper($from, $to, $expected)
     {
         $formatter = new POSIX();
-        $formatter->setEscaper(new Escape\CliEscaper());
+        $formatter->setEscaper(new Escape\Cli());
         $output = $formatter->format(Diff::create($from, $to));
         $this->assertSame($expected, $output);
     }

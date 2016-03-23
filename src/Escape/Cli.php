@@ -5,9 +5,9 @@ use Symfony\Component\VarDumper\Cloner\VarCloner;
 use Symfony\Component\VarDumper\Dumper\CliDumper;
 
 /**
- * CliEscaper escapes control characters using Symfony's CliDumper.
+ * Cli escapes control characters using Symfony's CliDumper.
  */
-class CliEscaper implements Escaper
+class Cli implements Escaper
 {
     /**
      * @var \Symfony\Component\VarDumper\Cloner\VarCloner
