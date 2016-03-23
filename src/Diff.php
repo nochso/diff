@@ -5,6 +5,13 @@ use nochso\Diff\Escape\Escaper;
 use nochso\Diff\LCS\LongestCommonSubsequence;
 use nochso\Omni\EOL;
 
+/**
+ * Diff consumes two strings and provides the resulting DiffLine objects.
+ *
+ * - Control how much context is kept by passing your own `ContextDiff` object.
+ * - Check for potential messages or warnings via `getMessages()`. This is
+ *   currently limited to a warning about line ending conflicts.
+ */
 class Diff
 {
     /**
@@ -17,10 +24,15 @@ class Diff
     private $messages = [];
 
     /**
-     * @param string                                         $from
-     * @param string                                         $to
-     * @param \nochso\Diff\ContextDiff                       $context
-     * @param \nochso\Diff\LCS\LongestCommonSubsequence|null $lcs
+     * Create a new Diff from two strings.
+     *
+     * @param string                                         $from    From/before string.
+     * @param string                                         $to      To/after string.
+     * @param \nochso\Diff\ContextDiff|null                  $context Optional ContextDiff to control the surrounding
+     *                                                                context lines. If null, a default ContextDiff
+     *                                                                is used.
+     * @param \nochso\Diff\LCS\LongestCommonSubsequence|null $lcs     Optional LCS implementation to use. If null, an
+     *                                                                appropiate implementation will be chosen automatically.
      *
      * @return \nochso\Diff\Diff
      */
@@ -41,7 +53,7 @@ class Diff
     }
 
     /**
-     * @return \nochso\Diff\DiffLine[]
+     * @return \nochso\Diff\DiffLine[] List of DiffLine objects.
      */
     public function getDiffLines()
     {
@@ -49,7 +61,8 @@ class Diff
     }
 
     /**
-     * @return int
+     * @return int The highest line number present in the diff. This can be
+     *             lower than the initial input that was provided.
      */
     public function getMaxLineNumber()
     {
@@ -62,7 +75,8 @@ class Diff
     }
 
     /**
-     * @return string[]
+     * @return string[] A list of messages or warnings, e.g. a detected line
+     *                  ending conflict
      */
     public function getMessages()
     {
