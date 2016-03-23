@@ -16,3 +16,12 @@ a
 ===
 a
 ===
+###
+Basic substitution single line
+===
+foo
+===
+bar
+===
+1: -foo
+ : +bar
