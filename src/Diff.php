@@ -1,6 +1,7 @@
 <?php
 namespace nochso\Diff;
 
+use nochso\Diff\Escape\Escaper;
 use nochso\Diff\LCS\LongestCommonSubsequence;
 use nochso\Omni\EOL;
 
@@ -66,6 +67,21 @@ class Diff
     public function getMessages()
     {
         return $this->messages;
+    }
+
+    /**
+     * escapeText of all DiffLine objects.
+     *
+     * @param \nochso\Diff\Escape\Escaper $escaper
+     */
+    public function escapeText(Escaper $escaper = null)
+    {
+        if ($escaper === null) {
+            return;
+        }
+        foreach ($this->diffLines as $line) {
+            $line->setText($escaper->escape($line->getText()));
+        }
     }
 
     /**

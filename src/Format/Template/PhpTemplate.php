@@ -60,6 +60,7 @@ class PhpTemplate implements Formatter
     public function format(Diff $diff)
     {
         $this->diff = $diff;
+        $diff->escapeText($this->escaper);
         ob_start();
         include Path::combine($this->basePath, $this->path);
         return ob_get_clean();
@@ -84,18 +85,5 @@ class PhpTemplate implements Formatter
     public function setEscaper(Escaper $escaper = null)
     {
         $this->escaper = $escaper;
-    }
-
-    /**
-     * @param string $input
-     *
-     * @return string
-     */
-    public function escape($input)
-    {
-        if ($this->escaper === null) {
-            return $input;
-        }
-        return $this->escaper->escape($input);
     }
 }
