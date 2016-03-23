@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a29cd235ca5b8aac93638d932b5dda58",
+    "hash": "b901daa2635c98dcbc7d47916f0780dc",
     "content-hash": "60182a57f9e20ca940b3a5fca1ed101a",
     "packages": [
         {
@@ -767,12 +767,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nochso/writeme.git",
-                "reference": "f6065a5ca4ebaa2a196a3009ad342898467b2a62"
+                "reference": "8d8b88fe449a2b35ce1256e681ed04f1db887144"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nochso/writeme/zipball/f6065a5ca4ebaa2a196a3009ad342898467b2a62",
-                "reference": "f6065a5ca4ebaa2a196a3009ad342898467b2a62",
+                "url": "https://api.github.com/repos/nochso/writeme/zipball/8d8b88fe449a2b35ce1256e681ed04f1db887144",
+                "reference": "8d8b88fe449a2b35ce1256e681ed04f1db887144",
                 "shasum": ""
             },
             "require": {
@@ -816,7 +816,7 @@
                 "writeme",
                 "yaml"
             ],
-            "time": "2016-03-22 15:27:37"
+            "time": "2016-03-22 23:30:16"
         },
         {
             "name": "phpdocumentor/reflection-common",
