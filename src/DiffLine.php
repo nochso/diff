@@ -34,6 +34,14 @@ class DiffLine
     }
 
     /**
+     * @param string $text
+     */
+    public function setText($text)
+    {
+        $this->line[self::TEXT] = $text;
+    }
+
+    /**
      * @return bool
      */
     public function isAddition()
