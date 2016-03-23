@@ -43,16 +43,11 @@ class PhpTemplate implements Formatter
      * @var \nochso\Diff\Escape\Escaper
      */
     private $escaper;
-    /**
-     * @var \nochso\Diff\ContextDiff
-     */
-    private $contextDiff;
 
     public function __construct($path, $basePath = __DIR__ . '/../../../template')
     {
         $this->path = $path;
         $this->basePath = $basePath;
-        $this->contextDiff = new ContextDiff();
     }
 
     /**
