@@ -2,7 +2,7 @@
 namespace nochso\Diff\Format\Template;
 
 use nochso\Diff\Diff;
-use nochso\Diff\Format\CliEscaper;
+use nochso\Diff\Escape\CliEscaper;
 use nochso\Diff\TestProvider;
 
 class POSIXTest extends \PHPUnit_Framework_TestCase

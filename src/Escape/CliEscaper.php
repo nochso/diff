@@ -1,5 +1,5 @@
 <?php
-namespace nochso\Diff\Format;
+namespace nochso\Diff\Escape;
 
 use Symfony\Component\VarDumper\Cloner\VarCloner;
 use Symfony\Component\VarDumper\Dumper\CliDumper;

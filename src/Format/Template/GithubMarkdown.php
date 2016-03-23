@@ -2,7 +2,7 @@
 namespace nochso\Diff\Format\Template;
 
 use nochso\Diff\DiffLine;
-use nochso\Diff\Format\HTMLEscaper;
+use nochso\Diff\Escape\HTMLEscaper;
 use nochso\Diff\Format\PrintfTrait;
 
 /**

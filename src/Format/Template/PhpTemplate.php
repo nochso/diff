@@ -43,7 +43,7 @@ class PhpTemplate implements Formatter
      */
     private $path;
     /**
-     * @var \nochso\Diff\Format\Escaper
+     * @var \nochso\Diff\Escape\Escaper
      */
     private $escaper;
     /**

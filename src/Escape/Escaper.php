@@ -1,5 +1,5 @@
 <?php
-namespace nochso\Diff\Format;
+namespace nochso\Diff\Escape;
 
 interface Escaper
 {

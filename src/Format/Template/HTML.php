@@ -1,7 +1,7 @@
 <?php
 namespace nochso\Diff\Format\Template;
 
-use nochso\Diff\Format\HTMLEscaper;
+use nochso\Diff\Escape\HTMLEscaper;
 use nochso\Diff\Format\PrintfTrait;
 
 class HTML extends PhpTemplate
