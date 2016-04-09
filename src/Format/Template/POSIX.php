@@ -42,7 +42,11 @@ class POSIX extends PhpTemplate
     {
         parent::__construct($path, $basePath);
         $this->printf = new Printf();
-        $this->printf->setFormats('%s', $this->color('%s', self::FG_GREEN), $this->color('%s', self::FG_RED), '%s: %s');
+        $same = '%s';
+        $add = $this->color('%s', self::FG_GREEN);
+        $remove = $this->color('%s', self::FG_RED);
+        $lineNumber = $this->color('%s', self::FG_YELLOW) . ' %s';
+        $this->printf->setFormats($same, $add, $remove, $lineNumber);
     }
 
     public function format(Diff $diff)
