@@ -18,6 +18,7 @@ implementation has not notably changed, new features were added:
 - Modify existing templates or create your own
 - Line numbering based on the "before" string
 - `Upstream` formatter for maintaining compatibility with `sebastian/diff` &mdash; and to keep the original tests around
+
 * * * *
 
 @toc@
@@ -29,16 +30,33 @@ composer require nochso/diff
 ```
 
 # Usage
+
+Start with creating a `Diff` object by passing two strings to `Diff::create()`:
+
 ```php
-# First you need a Diff object
 $diff = \nochso\Diff\Diff::create('foo', 'bar');
+```
 
-# Then you can use anything that implements the Formatter interface
+The Diff object contains a list of `DiffLine` objects, consisting of text, a
+line number and the type of diff operation.
+
+```php
+foreach ($diff->getDiffLines() as $line) {
+    if ($line->isRemoval()) {
+        echo 'Line ' . $line->getLineNumberFrom() . " was removed:\n";
+        echo $line->getText() . "\n";
+    }
+}
+```
+
+Most of the time you'll want to display the diff somewhere. You can pass a Diff
+instance to anything that implements the `Formatter` interface:
+
+```php
 $formatter = new \nochso\Diff\Format\Template\Text();
-
-# to render the Diff object.
 echo $formatter->format($diff);
 ```
+
 Output:
 ```
 1: -foo
