@@ -50,12 +50,12 @@ class POSIXTest extends \PHPUnit_Framework_TestCase
         $from = "a\nb\nc\nd\r\ne";
         $to = "a\nb\nc\n\r\ne";
         $expected = <<<TAG
-1: "a"
-2: "b"
-3: "c"
-4: \e[31m"d\\r"\e[0m
- : \e[32m"\\r"\e[0m
-5: "e"
+\e[33m1\e[0m "a"
+\e[33m2\e[0m "b"
+\e[33m3\e[0m "c"
+\e[33m4\e[0m \e[31m"d\\r"\e[0m
+\e[33m \e[0m \e[32m"\\r"\e[0m
+\e[33m5\e[0m "e"
 TAG;
         $this->testCliEscaper($from, $to, $expected);
     }
