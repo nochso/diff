@@ -53,8 +53,8 @@ class POSIXTest extends \PHPUnit_Framework_TestCase
 \e[33m1\e[0m "a"
 \e[33m2\e[0m "b"
 \e[33m3\e[0m "c"
-\e[33m4\e[0m \e[31m"d\\r"\e[0m
-\e[33m \e[0m \e[32m"\\r"\e[0m
+\e[33m4\e[0m \e[31m"d"\e[0m
+\e[33m \e[0m \e[32m""\e[0m
 \e[33m5\e[0m "e"
 TAG;
         $this->testCliEscaper($from, $to, $expected);
