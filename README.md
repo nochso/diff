@@ -1,6 +1,6 @@
 # nochso/diff
 
-> Namespace: `\nochso\Diff`
+> Namespace: `\nochso\Diff` [![Travis CI build status](https://api.travis-ci.org/nochso/diff.svg)](https://travis-ci.org/nochso/diff) [![Coverage status](https://coveralls.io/repos/github/nochso/diff/badge.svg)](https://coveralls.io/github/nochso/diff) [![License: BSD 3-clause](https://img.shields.io/badge/license-BSD%203-blue.svg)](LICENSE) [![Latest tag on Github](https://img.shields.io/github/tag/nochso/diff.svg)](https://github.com/nochso/diff/tags)
 
 Diff implementation for PHP with support for text, HTML and console output out of the box.
 

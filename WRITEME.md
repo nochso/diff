@@ -2,7 +2,7 @@
 ---
 # nochso/diff
 
-> Namespace: `\nochso\Diff`
+> Namespace: `\nochso\Diff` @badge.travis('nochso/diff')@ @badge.coveralls('nochso/diff')@ @badge('license', 'BSD 3', 'blue', 'License: BSD 3-clause', 'LICENSE')@ @badge.tag('nochso/diff')@
 
 Diff implementation for PHP with support for text, HTML and console output out of the box.
 
