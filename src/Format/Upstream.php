@@ -9,10 +9,8 @@ use nochso\Omni\Multiline;
  */
 class Upstream implements Formatter
 {
-    const HEADER_DEFAULT = ['--- Original', '+++ New'];
-
     private $showNonDiffLines = true;
-    private $header = self::HEADER_DEFAULT;
+    private $header = ['--- Original', '+++ New'];
 
     /**
      * @param bool $enable
